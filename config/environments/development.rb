@@ -17,7 +17,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.perform_caching = false
   config.action_mailer.delivery_method = :test
-  config.action_mailer.default_url_options = { host: 'https://application-name-anickle060193.c9users.io', protocol: 'https' }
+  config.action_mailer.default_url_options = { host: 'https://randrestaurant-anickle060193.c9users.io', protocol: 'https' }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
