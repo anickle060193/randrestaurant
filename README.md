@@ -1,15 +1,18 @@
-#Ruby on Rails Starter
+# Ruby on Rails Starter
 
-#Update config/development.rb with correct default_url_options.
-#Update config/production.rb with website.
-#Update config/test.rb with correct default_url_options.
-#Update config/initializers/session_store.rb with correct key.
-#Update config/application.rb with correct module.
-#Update this README
+1. Update config/development.rb with correct default_url_options.
+1. Update config/production.rb with website.
+1. Update config/test.rb with correct default_url_options.
+1. Update config/initializers/session_store.rb with correct key.
+1. Update config/application.rb with correct module.
+1. Update this README
 
-#Run:
+1. Run:
+    ```
     sudo service postgresql start
-#Run:
+    ```
+1. Run:
+    ```
     psql
     UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';
     DROP DATABASE template1;
@@ -18,8 +21,12 @@
     \c template1
     VACUUM FREEZE;
     \q
-#Run:
+    ```
+1. Run:
+    ```
     rails db:create
-    
-#Create run configuration:
+    ```
+1. Create run configuration:
+    ```
     rails server --binding $IP --port $PORT
+    ```
