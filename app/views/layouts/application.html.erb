@@ -1,14 +1,127 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Workspace</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>RandRestaurant</title>
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- Web Application Manifest -->
+  <!--
+  <link rel="manifest" href="manifest.json">
+  -->
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="RandRestaurant">
+  <!--
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+  -->
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="RandRestaurant">
+  <!--
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+  -->
+
+  <!-- Tile icon for Win8 (144x144 + tile color) -->
+  <!--
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+  <meta name="msapplication-TileColor" content="#2F3BA2">
+  -->
+
+  <!-- Color the status bar on mobile devices -->
+  <!--
+  <meta name="theme-color" content="#2F3BA2">
+  -->
+
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body class="controller__<%= controller_name %> action__<%= action_name %>" data-controller="<%= controller_name %>" data-action="<%= action_name %>">
 
-<%= yield %>
+  <nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <%= link_to "RandRestaurant", root_path, class: "navbar-brand" %>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <%= navbar_link_tag "Home", root_path %>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <% if user_signed_in? %>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.email %> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><%#= link_to "Profile", current_user %></li>
+                <li><%= link_to "Edit Profile", edit_user_registration_path %></li>
+                <li role="separator" class="divider"></li>
+                <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
+              </ul>
+            </li>
+          <% else %>
+            <li><%= link_to "Sign In", new_user_session_path %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <% if flash[ :notice ] %>
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= flash[ :notice ] %>
+      </div>
+    <% end %>
+    <% if flash[ :alert ] %>
+      <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= flash[ :alert ] %>
+      </div>
+    <% end %>
+    <% if flash[ :error ] %>
+      <div class="alert alert-danger alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <%= flash[ :error ] %>
+      </div>
+    <% end %>
+
+    <%= yield %>
+
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted">Created by <a href="https://github.com/anickle060193">@anickle060193</a></p>
+    </div>
+  </footer>
+
+  <% if Rails.env.development? %>
+    <div style="position: absolute; bottom: 60px;">
+      <button class="btn" type="button" data-toggle="collapse" data-target="#debugCollapse" aria-expanded="false" aria-controls="debugCollapse">
+        Debug Information
+      </button>
+      <div class="collapse" id="debugCollapse">
+        <%= debug( params ) %>
+      </div>
+    </div>
+  <% end %>
 
 </body>
 </html>
