@@ -4,7 +4,7 @@
       <h1>Add Restaurant</h1>
     </div>
 
-    <%= form_for @restaurant do |f| %>
+    <%= form_for @restaurant, url: create_restaurant_path do |f| %>
 
       <%= render 'shared/errors', object: f.object %>
 
