@@ -61,6 +61,7 @@
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <%= navbar_link_tag "Home", root_path %>
+          <%= navbar_link_tag "Restaurants", restaurants_path %>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <% if user_signed_in? %>
