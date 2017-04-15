@@ -7,4 +7,21 @@ class User < ApplicationRecord
          :rememberable,
          :trackable,
          :validatable
+
+  has_many :restaurant_likes
+  has_many :restaurants, through: :restaurant_likes, dependent: :destroy
+
+  default_scope { order( :email ) }
+
+  def like( restaurant )
+    restaurants << restaurant
+  end
+
+  def unlike( restaurant )
+    restaurants.destroy( restaurant )
+  end
+
+  def likes?( restaurant )
+    restaurants.exists?( restaurant.id )
+  end
 end

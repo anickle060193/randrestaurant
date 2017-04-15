@@ -19,6 +19,7 @@ gem 'kaminari',                   '~> 1.0.1'
 gem 'autoprefixer-rails',         '~> 6.7.7.1'
 gem 'bootstrap-sass',             '~> 3.3.6'
 gem 'devise',                     '~> 4.2.0'
+gem 'font-awesome-sass',          '~> 4.7.0'
 
 group :doc do
   gem 'sdoc',         '~> 0.4.0'

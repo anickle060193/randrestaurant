@@ -1,0 +1,17 @@
+<div class="well well-lg text-center">
+  <h1><%= @user.email %></h1>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <h2>Restaurants</h2>
+    <% if @user.restaurants.any? %>
+      <div class="list-group">
+        <%= render @restaurants %>
+      </div>
+      <%= paginate @restaurants, param_name: :restaurant_page %>
+    <% else %>
+      No liked restaurants...
+    <% end %>
+  </div>
+</div>

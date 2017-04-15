@@ -3,5 +3,6 @@
     <h1>
       <%= link_to_if @restaurant.link.present?, @restaurant.name, @restaurant.link, target: "_blank", rel: "noopener noreferrer" %>
     </h1>
+    <%= render "like_form" %>
 	</center>
 </div>

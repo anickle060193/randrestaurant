@@ -1,0 +1,6 @@
+<%= form_for current_user.restaurant_likes.new, remote: true do |f| %>
+  <%= hidden_field_tag :restaurant_id, @restaurant.id %>
+  <%= button_tag type: "submit", class: "btn btn-link", title: "Like", aria_label: "Like" do %>
+    <%= icon( 'thumbs-o-up', class: 'fa-2x' ) %>
+  <% end %>
+<% end %>
