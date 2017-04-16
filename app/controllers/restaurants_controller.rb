@@ -9,6 +9,8 @@ class RestaurantsController < ApplicationController
       @restaurants = Restaurant.all
     end
     @restaurants = @restaurants.page( params[ :page ] || 1 ).per( 12 )
+
+    respond_to( :html, :js )
   end
 
   def show

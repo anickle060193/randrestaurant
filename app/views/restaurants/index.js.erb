@@ -1,0 +1,3 @@
+$( "#search-results" ).replaceWith( "<%= escape_javascript( render( 'restaurants' ) ) %>" );
+window.history.replaceState( null, null, "<%= escape_javascript( request.original_url ) %>" );
+RandRestaurant.restaurants.search( "<%= escape_javascript( params[ :search ] ) %>" );
