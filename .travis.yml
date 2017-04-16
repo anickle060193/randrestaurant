@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - 2.3.3
+
+services:
+  - postgresql
+
+before_script:
+  - RAILS_ENV=test bundle exec rake db:create && bundle exec rake db:migrate
