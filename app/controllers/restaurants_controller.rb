@@ -6,7 +6,7 @@ class RestaurantsController < ApplicationController
     if params[ :search ].present?
       @restaurants = Restaurant.where( "name ILIKE :search", search: "%#{params[ :search ]}%" )
     else
-      @restaurants = Kaminari.paginate_array( [ ] )
+      @restaurants = Restaurant.all
     end
     @restaurants = @restaurants.page( params[ :page ] || 1 ).per( 12 )
   end
