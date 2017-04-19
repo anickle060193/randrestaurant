@@ -1,7 +1,7 @@
 <p>Hello,</p>
 
 <% if @resource.try( :unconfirmed_email? ) %>
-  <p>We're contacting you to notify you that your email for "I'm Still Alive" is being changed to <%= @resource.unconfirmed_email %>.</p>
+  <p>We're contacting you to notify you that your email for "RandRestaurant" is being changed to <%= @resource.unconfirmed_email %>.</p>
 <% else %>
-  <p>We're contacting you to notify you that your email for "I'm Still Alive" has been changed to <%= @resource.email %>.</p>
+  <p>We're contacting you to notify you that your email for "RandRestaurant" has been changed to <%= @resource.email %>.</p>
 <% end %>
