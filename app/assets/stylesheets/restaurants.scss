@@ -1,3 +1,7 @@
-// Place all the styles related to the Restaurants controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.never-again:after
+{
+    content: url( 'never_again_stamp.svg' );
+    position: absolute;
+    display: inline-block;
+    transform: translate( -100%, -25% ) rotate( -15deg );
+}

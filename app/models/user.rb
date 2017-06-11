@@ -11,7 +11,8 @@ class User < ApplicationRecord
   has_many :restaurant_likes
   has_many :restaurants, through: :restaurant_likes, dependent: :destroy
 
-  default_scope { order( :email ) }
+  has_many :never_agains
+  has_many :never_agained_restaurants, through: :never_agains, source: :restaurant
 
   def like( restaurant )
     restaurants << restaurant
@@ -23,5 +24,17 @@ class User < ApplicationRecord
 
   def likes?( restaurant )
     restaurants.exists?( restaurant.id )
+  end
+
+  def never_again( restaurant )
+    never_agained_restaurants << restaurant
+  end
+
+  def unnever_again( restaurant )
+    never_agained_restaurants.destroy( restaurant )
+  end
+
+  def never_agained?( restaurant )
+    never_agained_restaurants.exists?( restaurant.id )
   end
 end

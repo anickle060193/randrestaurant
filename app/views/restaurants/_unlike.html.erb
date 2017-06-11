@@ -1,6 +1,6 @@
 <%= form_for current_user.restaurant_likes.find_by( restaurant: @restaurant ), method: :delete, remote: true do |f| %>
   <%= hidden_field_tag :restaurant_id, @restaurant.id %>
-  <%= button_tag type: "submit", class: "btn btn-link", title: "Unlike", aria_label: "Unlike" do %>
+  <%= button_tag type: "submit", class: "btn btn-link" do %>
     <%= icon( 'thumbs-up', class: 'fa-2x' ) %>
   <% end %>
 <% end %>

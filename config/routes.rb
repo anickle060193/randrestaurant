@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   get '/:id', to: "restaurants#show", as: :restaurant
 
   resources :restaurant_likes, only: [ :create, :destroy ]
+  resources :never_agains, only: [ :create, :destroy ]
 end

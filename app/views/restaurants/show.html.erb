@@ -1,8 +1,9 @@
 <div class="well">
   <center>
-    <h1>
+    <h1 class="<%= 'never-again' if user_signed_in? && current_user.never_agained?( @restaurant ) %>">
       <%= link_to_if @restaurant.link.present?, @restaurant.name, @restaurant.link, target: "_blank", rel: "noopener noreferrer" %>
     </h1>
-    <%= render "like_form" %>
-	</center>
+    <%= render 'like_form' %>
+    <%= render 'never_again_form' %>
+  </center>
 </div>

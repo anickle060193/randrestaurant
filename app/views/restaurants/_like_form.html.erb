@@ -1,5 +1,5 @@
 <div id="like-form" class="like-form">
-  <% if user_signed_in? %>
+  <% if user_signed_in? && !current_user.never_agained?( @restaurant ) %>
     <% if current_user.likes?( @restaurant ) %>
       <%= render "unlike" %>
     <% else %>

@@ -1,0 +1,9 @@
+<div id="never-again-form" class="never-again-form">
+  <% if user_signed_in? %>
+    <% if current_user.never_agained?( @restaurant ) %>
+      <%= render "unnever_again" %>
+    <% else %>
+      <%= render "never_again" %>
+    <% end %>
+  <% end %>
+</div>
