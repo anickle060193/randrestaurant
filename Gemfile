@@ -11,15 +11,17 @@ gem 'coffee-rails',   '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks',     '~> 5.0.0'
 gem 'jbuilder',       '~> 2.0'
-gem 'pg',             '~> 0.18.4'
+gem 'pg',             '~> 0.20.0'
 
-gem 'bcrypt',                     '~> 3.1.11'
+gem 'bcrypt',                     '~> 3.1.11', platforms: [ :ruby, :x64_mingw, :mingw ]
 gem 'faker',                      '~> 1.7.3'
 gem 'kaminari',                   '~> 1.0.1'
 gem 'autoprefixer-rails',         '~> 6.7.7.1'
 gem 'bootstrap-sass',             '~> 3.3.6'
 gem 'devise',                     '~> 4.2.0'
 gem 'font-awesome-sass',          '~> 4.7.0'
+
+gem 'tzinfo-data', platforms: [ :mingw, :mswin, :x64_mingw ]
 
 group :doc do
   gem 'sdoc',         '~> 0.4.0'
