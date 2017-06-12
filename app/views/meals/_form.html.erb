@@ -1,0 +1,17 @@
+<%= form_for @meal do |f| %>
+
+    <%= render 'shared/errors', object: f.object %>
+
+    <div class="form-group">
+    <%= f.label :name, "Meal Name", class: "control-label", data: { required: true } %>
+    <%= f.text_field :name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+    <%= f.label :time, class: "control-label" %>
+    <%= f.datetime_field :time, class: "form-control" %>
+    </div>
+
+    <%= f.submit yield( :button_text ), class: "btn btn-primary btn-lg btn-block" %>
+
+<% end %>

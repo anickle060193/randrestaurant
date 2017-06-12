@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_many :restaurants, through: :restaurant_likes, dependent: :destroy
 
   has_many :never_agains
-  has_many :never_agained_restaurants, through: :never_agains, source: :restaurant
+  has_many :never_agained_restaurants, through: :never_agains, source: :restaurant, dependent: :destroy
 
   def like( restaurant )
     restaurants << restaurant
