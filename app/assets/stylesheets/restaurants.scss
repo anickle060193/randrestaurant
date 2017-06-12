@@ -5,3 +5,23 @@
     display: inline-block;
     transform: translate( -100%, -25% ) rotate( -15deg );
 }
+
+.fa.fa-thumbs-o-up
+{
+    color: #afafaf;
+
+    &:hover
+    {
+        color: #777777;
+    }
+}
+
+.fa.fa-thumbs-up
+{
+    color: #ff9c1c;
+
+    &:hover
+    {
+        color: #d68317;
+    }
+}
