@@ -1,9 +1,10 @@
 .never-again:after
 {
-    content: url( 'never_again_stamp.svg' );
+    content: asset-url( 'never_again_stamp.svg' );
     position: absolute;
     display: inline-block;
-    transform: translate( -100%, -25% ) rotate( -15deg );
+    left: 50%;
+    transform: translate( -50%, -25% ) rotate( -15deg );
 }
 
 .fa.fa-thumbs-o-up
