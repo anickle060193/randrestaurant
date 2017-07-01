@@ -2,5 +2,5 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
-//= init
+//= generated/init
 //= require_tree .

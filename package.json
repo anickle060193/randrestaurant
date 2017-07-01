@@ -1,0 +1,7 @@
+{
+  "name": "randrestaurant",
+  "dependencies": {
+    "@types/jquery": "^3.2.5",
+    "typescript": "^2.4.1"
+  }
+}
