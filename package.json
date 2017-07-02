@@ -2,6 +2,7 @@
   "name": "randrestaurant",
   "dependencies": {
     "@types/jquery": "^3.2.5",
+    "@types/leaflet": "^1.0.63",
     "typescript": "^2.4.1"
   }
 }
