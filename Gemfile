@@ -12,6 +12,7 @@ gem 'jquery-rails'
 gem 'turbolinks',     '~> 5.0.0'
 gem 'jbuilder',       '~> 2.0'
 gem 'pg',             '~> 0.20.0'
+gem 'httparty'
 
 gem 'bcrypt',                     '~> 3.1.11', platforms: [ :ruby, :x64_mingw, :mingw ]
 gem 'faker',                      '~> 1.7.3'

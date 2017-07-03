@@ -3,12 +3,7 @@ class RestaurantsController < ApplicationController
   before_action :find_restaurant, only: [ :show ]
 
   def index
-    if params[ :search ].present?
-      @restaurants = Restaurant.where( "name ILIKE :search", search: "%#{params[ :search ]}%" )
-    else
-      @restaurants = Restaurant.all
-    end
-    @restaurants = @restaurants.page( params[ :page ] || 1 ).per( 12 )
+    @restaurants = Restaurant.page( params[ :page ] || 1 ).per( 12 )
   end
 
   def show
@@ -30,7 +25,7 @@ class RestaurantsController < ApplicationController
   private
 
     def restaurant_params
-      params.require( :restaurant ).permit( :name, :link )
+      params.require( :restaurant ).permit( :place_id )
     end
 
     def find_restaurant

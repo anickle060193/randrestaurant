@@ -2,8 +2,6 @@ var Restaurants;
 (function (Restaurants) {
     function initNewMap() {
         console.log('Restaurants.initNewMap()');
-        var restaurantNameInput = document.getElementById('restaurant-name');
-        var restaurantLinkInput = document.getElementById('restaurant-link');
         var restaurantPlaceIdInput = document.getElementById('restaurant-place-id');
         var mapElement = document.getElementById('restaurant-map');
         var map = new google.maps.Map(mapElement, {
@@ -64,16 +62,11 @@ var Restaurants;
                 markers.push(marker);
                 marker.addListener('click', function () {
                     placesService.getDetails({ placeId: place.place_id }, function (result, status) {
-                        restaurantNameInput.setAttribute('value', place.name);
                         restaurantPlaceIdInput.setAttribute('value', place.place_id);
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
                             console.log(result);
-                            restaurantLinkInput.setAttribute('value', result.website);
                             infoWindow.setContent("\n                                <center>\n                                    <b>" + place.name + "</b>\n                                    <br>\n                                    " + result.vicinity + "\n                                </center>");
                             infoWindow.open(map, marker);
-                        }
-                        else {
-                            restaurantLinkInput.setAttribute('value', '');
                         }
                     });
                 });
@@ -97,14 +90,22 @@ var Restaurants;
     function initShowMap() {
         console.log('Restaurants.initShowMap()');
         var mapElement = document.getElementById('restaurant-map');
+        var restaurantLocation = JSON.parse(mapElement.dataset.location);
         var map = new google.maps.Map(mapElement, {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8,
+            center: restaurantLocation,
+            zoom: 15,
             disableDefaultUI: true,
             draggable: false,
             zoomControl: false,
             scrollwheel: false,
             disableDoubleClickZoom: true
+        });
+        new google.maps.Marker({
+            map: map,
+            position: restaurantLocation
+        });
+        google.maps.event.addDomListener(window, 'resize', function () {
+            map.setCenter(restaurantLocation);
         });
     }
     Restaurants.initShowMap = initShowMap;

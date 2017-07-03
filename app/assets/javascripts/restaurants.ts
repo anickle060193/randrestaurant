@@ -4,8 +4,6 @@ namespace Restaurants
     {
         console.log( 'Restaurants.initNewMap()' );
 
-        let restaurantNameInput = document.getElementById( 'restaurant-name' );
-        let restaurantLinkInput = document.getElementById( 'restaurant-link' );
         let restaurantPlaceIdInput = document.getElementById( 'restaurant-place-id' );
 
         let mapElement: HTMLElement = document.getElementById( 'restaurant-map' );
@@ -89,13 +87,11 @@ namespace Restaurants
                 {
                     placesService.getDetails( { placeId: place.place_id }, function( result, status )
                     {
-                        restaurantNameInput.setAttribute( 'value', place.name );
                         restaurantPlaceIdInput.setAttribute( 'value', place.place_id );
 
                         if( status === google.maps.places.PlacesServiceStatus.OK )
                         {
                             console.log( result );
-                            restaurantLinkInput.setAttribute( 'value', result.website );
 
                             infoWindow.setContent( `
                                 <center>
@@ -105,10 +101,6 @@ namespace Restaurants
                                 </center>`
                             );
                             infoWindow.open( map, marker );
-                        }
-                        else
-                        {
-                            restaurantLinkInput.setAttribute( 'value', '' );
                         }
                     } );
                 } );
@@ -130,15 +122,26 @@ namespace Restaurants
     {
         console.log( 'Restaurants.initShowMap()' );
         
-        let mapElement: HTMLElement = document.getElementById( 'restaurant-map' );
-        let map: google.maps.Map = new google.maps.Map( mapElement, {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8,
+        let mapElement = document.getElementById( 'restaurant-map' );
+        let restaurantLocation = <google.maps.LatLngLiteral>JSON.parse( mapElement.dataset.location );
+        let map = new google.maps.Map( mapElement, {
+            center: restaurantLocation,
+            zoom: 15,
             disableDefaultUI: true,
             draggable: false,
             zoomControl: false,
             scrollwheel: false,
             disableDoubleClickZoom: true
+        } );
+        
+        new google.maps.Marker( {
+            map: map,
+            position: restaurantLocation
+        } );
+
+        google.maps.event.addDomListener( window, 'resize', function()
+        {
+            map.setCenter( restaurantLocation );
         } );
     }
 }

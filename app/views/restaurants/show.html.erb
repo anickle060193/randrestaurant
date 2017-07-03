@@ -1,12 +1,17 @@
-<div class="well">
-  <center>
-    <h1 class="<%= 'never-again' if user_signed_in? && current_user.never_agained?( @restaurant ) %>">
-      <%= link_to_if @restaurant.link.present?, @restaurant.name, @restaurant.link, target: "_blank", rel: "noopener noreferrer" %>
-    </h1>
-    <%= render 'like_form' %>
-    <%= render 'never_again_form' %>
-  </center>
+<div class='row'>
 
-  <div id="restaurant-map"></div>
+  <div class='col-md-8 col-md-offset-2'>
+    <div class="well">
+      <center>
+        <h1 class="<%= 'never-again' if user_signed_in? && current_user.never_agained?( @restaurant ) %>">
+          <%= link_to @restaurant.name, @restaurant.link, target: "_blank", rel: "noopener noreferrer" %>
+        </h1>
+        <%= render 'like_form' %>
+        <%= render 'never_again_form' %>
+      </center>
+    </div>
+
+    <%= content_tag 'div', '', id: 'restaurant-map', data: { name: @restaurant.name, location: @restaurant.location } %>
+  </div>
 
 </div>

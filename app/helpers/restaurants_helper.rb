@@ -1,7 +1,7 @@
 module RestaurantsHelper
 
     def google_maps_api_tag
-        api_key = Rails.application.secrets.maps_api_key
+        api_key = Rails.application.secrets.google_maps_api_key
         if [ 'new', 'create', 'edit' ].include?( action_name )
             callback = 'Restaurants.initNewMap'
             url = "https://maps.googleapis.com/maps/api/js?key=#{api_key}&libraries=places&callback=#{callback}"
