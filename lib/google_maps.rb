@@ -5,6 +5,8 @@ class GoogleMaps
     default_options.update( verify: false )
 
     def place_details( place_id )
-        self.class.get('/place/details/json', query: { placeid: place_id } )[ 'result' ]
+        Rails.cache.fetch( place_id, expires_in: 30.days ) do
+            self.class.get( '/place/details/json', query: { placeid: place_id } )[ 'result' ]
+        end
     end
 end
