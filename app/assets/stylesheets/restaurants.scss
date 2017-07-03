@@ -1,33 +1,60 @@
-.never-again:after
+.controller__restaurants
 {
-    content: asset-url( 'never_again_stamp.svg' );
-    position: absolute;
-    display: inline-block;
-    left: 50%;
-    transform: translate( -50%, -25% ) rotate( -15deg );
-}
-
-.fa.fa-thumbs-o-up
-{
-    color: #afafaf;
-
-    &:hover
+    &.action__new
     {
-        color: #777777;
+        #restaurant-map
+        {
+            height: 300px;
+            margin-bottom: 12px;
+
+            #map-search
+            {
+                visibility: visible;
+            }
+        }
+
+        #map-search
+        {
+            width: 80%;
+            margin: 10px;
+            visibility: hidden
+        }
     }
-}
 
-.fa.fa-thumbs-up
-{
-    color: #ff9c1c;
-
-    &:hover
+    &.action__show
     {
-        color: #d68317;
-    }
-}
+        .never-again:after
+        {
+            content: asset-url( 'never_again_stamp.svg' );
+            position: absolute;
+            display: inline-block;
+            left: 50%;
+            transform: translate( -50%, -25% ) rotate( -15deg );
+        }
 
-#restaurant-map
-{
-    height: 300px;
+        .fa.fa-thumbs-o-up
+        {
+            color: #afafaf;
+
+            &:hover
+            {
+                color: #777777;
+            }
+        }
+
+        .fa.fa-thumbs-up
+        {
+            color: #ff9c1c;
+
+            &:hover
+            {
+                color: #d68317;
+            }
+        }
+
+        #restaurant-map
+        {
+            height: 300px;
+        }
+    }
 }

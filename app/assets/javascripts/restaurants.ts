@@ -1,24 +1,144 @@
-/// <reference types="leaflet" />
-
-RandRestaurant.ready( function()
+namespace Restaurants
 {
-    let map: L.Map = L.map( 'restaurant-map' );
-
-    if( navigator.geolocation )
+    export function initNewMap()
     {
-        navigator.geolocation.getCurrentPosition( function( position: Position )
+        console.log( 'Restaurants.initNewMap()' );
+
+        let restaurantNameInput = document.getElementById( 'restaurant-name' );
+        let restaurantLinkInput = document.getElementById( 'restaurant-link' );
+        let restaurantPlaceIdInput = document.getElementById( 'restaurant-place-id' );
+
+        let mapElement: HTMLElement = document.getElementById( 'restaurant-map' );
+        let map = new google.maps.Map( mapElement, {
+            center: { lat: 39.0915837, lng: -94.8559123 },
+            zoom: 12,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.BOTTOM_RIGHT
+            }
+        } );
+
+        let infoWindow = new google.maps.InfoWindow();
+
+        let placesService = new google.maps.places.PlacesService( map );
+
+        if( navigator.geolocation )
         {
-            let coords: L.LatLngTuple = [ position.coords.latitude, position.coords.longitude ];
-            map.setView( coords, 13 );
-            let marker = L.marker( coords ).addTo( map );
+            navigator.geolocation.getCurrentPosition( function( position )
+            {
+                let currentPosition = new google.maps.LatLng( position.coords.latitude, position.coords.longitude );
+                map.setCenter( currentPosition );
+                new google.maps.Marker( {
+                    position: currentPosition,
+                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                    map: map
+                } );
+            } );
+        }
+        
+        let mapSearchInput = document.getElementById( 'map-search' ) as HTMLInputElement;
+        $( mapSearchInput ).on( 'keypress keydown keyup', function( e )
+        {
+            if( e.keyCode == 13 )
+            {
+                e.preventDefault();
+            }
+        } );
+        let searchBox = new google.maps.places.SearchBox( mapSearchInput );
+        map.controls[ google.maps.ControlPosition.TOP_CENTER ].push( mapSearchInput );
+
+        map.addListener( 'bounds_changed', function()
+        {
+            searchBox.setBounds( map.getBounds() );
+        } );
+
+        let markers: google.maps.Marker[] = [ ];
+        searchBox.addListener( 'places_changed', function()
+        {
+            let places = searchBox.getPlaces();
+            if( places.length == 0 )
+            {
+                return;
+            }
+
+            for( let marker of markers )
+            {
+                marker.setMap( null );
+            }
+
+            markers = [ ];
+
+            let bounds = new google.maps.LatLngBounds();
+            for( let place of places )
+            {
+                if( !place.geometry )
+                {
+                    return;
+                }
+
+                let marker = new google.maps.Marker( {
+                    map: map,
+                    title: place.name,
+                    position: place.geometry.location
+                } );
+                markers.push( marker );
+
+                marker.addListener( 'click', function()
+                {
+                    placesService.getDetails( { placeId: place.place_id }, function( result, status )
+                    {
+                        restaurantNameInput.setAttribute( 'value', place.name );
+                        restaurantPlaceIdInput.setAttribute( 'value', place.place_id );
+
+                        if( status === google.maps.places.PlacesServiceStatus.OK )
+                        {
+                            console.log( result );
+                            restaurantLinkInput.setAttribute( 'value', result.website );
+
+                            infoWindow.setContent( `
+                                <center>
+                                    <b>${place.name}</b>
+                                    <br>
+                                    ${result.vicinity}
+                                </center>`
+                            );
+                            infoWindow.open( map, marker );
+                        }
+                        else
+                        {
+                            restaurantLinkInput.setAttribute( 'value', '' );
+                        }
+                    } );
+                } );
+                
+                if( place.geometry.viewport )
+                {
+                    bounds.union( place.geometry.viewport );
+                }
+                else
+                {
+                    bounds.extend( place.geometry.location );
+                }
+                map.fitBounds( bounds );
+            }
         } );
     }
 
-    L.tileLayer( 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox.streets',
-        accessToken: 'pk.eyJ1IjoiYW5pY2tsZTA2MDE5MyIsImEiOiJjajRreDlkbmUwbzFzMzNwbHpiYjllZDZiIn0.FryduFmbJWsVY8w4uodMVg'
-    } ).addTo( map );
-
-} );
+    export function initShowMap()
+    {
+        console.log( 'Restaurants.initShowMap()' );
+        
+        let mapElement: HTMLElement = document.getElementById( 'restaurant-map' );
+        let map: google.maps.Map = new google.maps.Map( mapElement, {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8,
+            disableDefaultUI: true,
+            draggable: false,
+            zoomControl: false,
+            scrollwheel: false,
+            disableDoubleClickZoom: true
+        } );
+    }
+}

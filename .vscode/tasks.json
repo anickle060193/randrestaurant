@@ -1,23 +1,21 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version" : "2.0.0",
-    "tasks" : [
+    "version": "2.0.0",
+    "tasks": [
         {
-            "taskName" : "tsc",
-            "command" : "${workspaceRoot}/node_modules/.bin/tsc",
-            "args" : [ "-w", "-p", "." ],
-            "showOutput" : "silent",
-            "isShellCommand" : true,
-            "isBackground" : true,
-            "problemMatcher" : "$tsc-watch"
+            "taskName": "tsc",
+            "command": "${workspaceRoot}/node_modules/.bin/tsc",
+            "args": [ "-w", "-p", "." ],
+            "showOutput": "silent",
+            "isShellCommand": true,
+            "isBackground": true,
+            "problemMatcher": "$tsc-watch"
         },
         {
-            "taskName" : "rails s",
-            "command" : "rails",
-            "args" : [ "s" ],
-            "isShellCommand" : true,
-            "isBackground" : true
+            "taskName": "rails s",
+            "command": "rails",
+            "args": [ "s" ],
+            "isShellCommand": true,
+            "isBackground": true
         }
     ]
 }
