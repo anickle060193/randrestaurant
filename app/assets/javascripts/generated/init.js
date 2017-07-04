@@ -1,4 +1,4 @@
-/// <reference types="jquery" />
+"use strict";
 var RandRestaurant;
 (function (RandRestaurant) {
     function init() {
@@ -11,7 +11,7 @@ var RandRestaurant;
     RandRestaurant.ready = ready;
     function pageReady(controller, action, callback) {
         ready(function () {
-            var selector = "[data-controller='#{controller}'][data-action='#{action}']";
+            var selector = "[data-controller=\"" + controller + "\"][data-action=\"" + action + "\"]";
             if ($(selector).length > 0) {
                 callback();
             }

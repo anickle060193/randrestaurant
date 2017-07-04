@@ -2,5 +2,6 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
-//= generated/init
-//= require_tree .
+//= require ./generated/init
+//= require ./generated/my_location_marker
+//= require_tree ./generated

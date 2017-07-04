@@ -14,28 +14,17 @@ namespace Restaurants
             mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-                position: google.maps.ControlPosition.BOTTOM_RIGHT
-            }
+                position: google.maps.ControlPosition.BOTTOM_CENTER
+            },
+            streetViewControl: false
         } );
 
         let infoWindow = new google.maps.InfoWindow();
 
         let placesService = new google.maps.places.PlacesService( map );
 
-        if( navigator.geolocation )
-        {
-            navigator.geolocation.getCurrentPosition( function( position )
-            {
-                let currentPosition = new google.maps.LatLng( position.coords.latitude, position.coords.longitude );
-                map.setCenter( currentPosition );
-                new google.maps.Marker( {
-                    position: currentPosition,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                    map: map
-                } );
-            } );
-        }
-        
+        let myLocationMarker = new MyLocationMarker( map );
+
         let mapSearchInput = document.getElementById( 'map-search' ) as HTMLInputElement;
         $( mapSearchInput ).on( 'keypress keydown keyup', function( e )
         {
@@ -145,3 +134,13 @@ namespace Restaurants
         } );
     }
 }
+
+RandRestaurant.pageReady( 'restaurants', 'new', function()
+{
+    Restaurants.initNewMap();
+} );
+
+RandRestaurant.pageReady( 'restaurants', 'show', function()
+{
+    Restaurants.initShowMap();
+} );

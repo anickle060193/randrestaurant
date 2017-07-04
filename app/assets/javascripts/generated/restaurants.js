@@ -1,3 +1,4 @@
+"use strict";
 var Restaurants;
 (function (Restaurants) {
     function initNewMap() {
@@ -11,22 +12,13 @@ var Restaurants;
             mapTypeControl: true,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-                position: google.maps.ControlPosition.BOTTOM_RIGHT
-            }
+                position: google.maps.ControlPosition.BOTTOM_CENTER
+            },
+            streetViewControl: false
         });
         var infoWindow = new google.maps.InfoWindow();
         var placesService = new google.maps.places.PlacesService(map);
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                map.setCenter(currentPosition);
-                new google.maps.Marker({
-                    position: currentPosition,
-                    icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-                    map: map
-                });
-            });
-        }
+        var myLocationMarker = new MyLocationMarker(map);
         var mapSearchInput = document.getElementById('map-search');
         $(mapSearchInput).on('keypress keydown keyup', function (e) {
             if (e.keyCode == 13) {
@@ -110,4 +102,10 @@ var Restaurants;
     }
     Restaurants.initShowMap = initShowMap;
 })(Restaurants || (Restaurants = {}));
+RandRestaurant.pageReady('restaurants', 'new', function () {
+    Restaurants.initNewMap();
+});
+RandRestaurant.pageReady('restaurants', 'show', function () {
+    Restaurants.initShowMap();
+});
 //# sourceMappingURL=restaurants.js.map

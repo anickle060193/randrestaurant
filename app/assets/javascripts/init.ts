@@ -1,5 +1,3 @@
-/// <reference types="jquery" />
-
 namespace RandRestaurant
 {
     export function init()
@@ -16,7 +14,7 @@ namespace RandRestaurant
     {
         ready( function()
         {
-            let selector = "[data-controller='#{controller}'][data-action='#{action}']"
+            let selector = `[data-controller="${controller}"][data-action="${action}"]`;
             if( $( selector ).length > 0 )
             {
                 callback()
