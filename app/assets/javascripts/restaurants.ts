@@ -1,12 +1,10 @@
 namespace Restaurants
 {
-    export function initNewMap()
+    export function initSearchMap()
     {
-        console.log( 'Restaurants.initNewMap()' );
+        console.log( 'Restaurants.initSearchMap()' );
 
-        let restaurantPlaceIdInput = document.getElementById( 'restaurant-place-id' );
-
-        let mapElement: HTMLElement = document.getElementById( 'restaurant-map' );
+        let mapElement: HTMLElement = document.getElementById( 'restaurant-search-map' );
         let map = new google.maps.Map( mapElement, {
             center: { lat: 39.0915837, lng: -94.8559123 },
             zoom: 12,
@@ -24,15 +22,17 @@ namespace Restaurants
         let placesService = new google.maps.places.PlacesService( map );
 
         let myLocationMarker = new MyLocationMarker( map );
-
-        let mapSearchInput = document.getElementById( 'map-search' ) as HTMLInputElement;
-        $( mapSearchInput ).on( 'keypress keydown keyup', function( e )
+        google.maps.event.addDomListenerOnce( window, 'turbolinks:before-render', function()
         {
-            if( e.keyCode == 13 )
-            {
-                e.preventDefault();
-            }
+            myLocationMarker.setMap( null );
         } );
+
+        let mapSearchInput = document.createElement( 'input' );
+        mapSearchInput.id = 'restaurant-search-input';
+        mapSearchInput.type = 'text';
+        mapSearchInput.classList.add( 'form-control' );
+        mapSearchInput.placeholder = 'Search for restaurants...';
+
         let searchBox = new google.maps.places.SearchBox( mapSearchInput );
         map.controls[ google.maps.ControlPosition.TOP_CENTER ].push( mapSearchInput );
 
@@ -76,15 +76,13 @@ namespace Restaurants
                 {
                     placesService.getDetails( { placeId: place.place_id }, function( result, status )
                     {
-                        restaurantPlaceIdInput.setAttribute( 'value', place.place_id );
-
                         if( status === google.maps.places.PlacesServiceStatus.OK )
                         {
                             console.log( result );
 
                             infoWindow.setContent( `
                                 <center>
-                                    <b>${place.name}</b>
+                                    <b><a href="/${place.place_id}">${place.name}</a></b>
                                     <br>
                                     ${result.vicinity}
                                 </center>`
@@ -93,7 +91,7 @@ namespace Restaurants
                         }
                     } );
                 } );
-                
+
                 if( place.geometry.viewport )
                 {
                     bounds.union( place.geometry.viewport );
@@ -110,7 +108,7 @@ namespace Restaurants
     export function initShowMap()
     {
         console.log( 'Restaurants.initShowMap()' );
-        
+
         let mapElement = document.getElementById( 'restaurant-map' );
         let restaurantLocation = <google.maps.LatLngLiteral>JSON.parse( mapElement.dataset.location );
         let map = new google.maps.Map( mapElement, {
@@ -122,7 +120,7 @@ namespace Restaurants
             scrollwheel: false,
             disableDoubleClickZoom: true
         } );
-        
+
         new google.maps.Marker( {
             map: map,
             position: restaurantLocation
@@ -135,9 +133,9 @@ namespace Restaurants
     }
 }
 
-RandRestaurant.pageReady( 'restaurants', 'new', function()
+RandRestaurant.pageReady( 'restaurants', 'search', function()
 {
-    Restaurants.initNewMap();
+    Restaurants.initSearchMap();
 } );
 
 RandRestaurant.pageReady( 'restaurants', 'show', function()

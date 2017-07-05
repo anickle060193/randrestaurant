@@ -2,6 +2,7 @@ class MyLocationMarker extends google.maps.OverlayView
 {
     private map: google.maps.Map;
     private svg: SVGSVGElement = null;
+    private watchId: number = 0;
     private position: google.maps.LatLng = null;
     private accuracy: number = 0;
     private firstPosition: boolean = true;
@@ -30,7 +31,7 @@ class MyLocationMarker extends google.maps.OverlayView
     private onWatchPositionError( error: PositionError )
     {
         console.error( error );
-        
+
         this.position = null;
         this.accuracy = 0;
         this.draw();
@@ -57,7 +58,12 @@ class MyLocationMarker extends google.maps.OverlayView
 
         if( navigator.geolocation )
         {
-            navigator.geolocation.watchPosition
+            navigator.geolocation.getCurrentPosition
+            (
+                ( position ) => this.onWatchPositionSuccess( position ),
+                ( error ) => this.onWatchPositionError( error )
+            );
+            this.watchId = navigator.geolocation.watchPosition
             (
                 ( position ) => this.onWatchPositionSuccess( position ),
                 ( error ) => this.onWatchPositionError( error )
@@ -90,5 +96,6 @@ class MyLocationMarker extends google.maps.OverlayView
     onRemove()
     {
         this.svg.parentElement.removeChild( this.svg );
+        navigator.geolocation.clearWatch( this.watchId );
     }
 }

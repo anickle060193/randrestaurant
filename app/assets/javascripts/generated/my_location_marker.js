@@ -14,6 +14,7 @@ var MyLocationMarker = (function (_super) {
     function MyLocationMarker(map) {
         var _this = _super.call(this) || this;
         _this.svg = null;
+        _this.watchId = 0;
         _this.position = null;
         _this.accuracy = 0;
         _this.firstPosition = true;
@@ -47,7 +48,8 @@ var MyLocationMarker = (function (_super) {
         this.svg = div.firstElementChild;
         this.getPanes().mapPane.appendChild(this.svg);
         if (navigator.geolocation) {
-            navigator.geolocation.watchPosition(function (position) { return _this.onWatchPositionSuccess(position); }, function (error) { return _this.onWatchPositionError(error); });
+            navigator.geolocation.getCurrentPosition(function (position) { return _this.onWatchPositionSuccess(position); }, function (error) { return _this.onWatchPositionError(error); });
+            this.watchId = navigator.geolocation.watchPosition(function (position) { return _this.onWatchPositionSuccess(position); }, function (error) { return _this.onWatchPositionError(error); });
         }
     };
     MyLocationMarker.prototype.draw = function () {
@@ -67,6 +69,7 @@ var MyLocationMarker = (function (_super) {
     };
     MyLocationMarker.prototype.onRemove = function () {
         this.svg.parentElement.removeChild(this.svg);
+        navigator.geolocation.clearWatch(this.watchId);
     };
     return MyLocationMarker;
 }(google.maps.OverlayView));

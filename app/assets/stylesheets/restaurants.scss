@@ -1,19 +1,19 @@
 .controller__restaurants
 {
-    &.action__new
+    &.action__search
     {
-        #restaurant-map
+        #restaurant-search-map
         {
-            height: 300px;
-            margin-bottom: 12px;
+            height: 400px;
+            margin-bottom: 16px;
 
-            #map-search
+            #restaurant-search-input
             {
                 visibility: visible;
             }
         }
 
-        #map-search
+        #restaurant-search-input
         {
             width: 80%;
             margin: 10px;
@@ -55,6 +55,7 @@
         #restaurant-map
         {
             height: 300px;
+            margin-bottom: 16px;
         }
     }
 }

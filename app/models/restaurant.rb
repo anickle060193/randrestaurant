@@ -11,6 +11,14 @@ class Restaurant < ApplicationRecord
 
   validates :place_id, presence: true, uniqueness: true
 
+  def self.from_place_id( place_id )
+    Restaurant.find_or_initialize_by( place_id: place_id );
+  end
+
+  def to_param
+    self.place_id
+  end
+
   def name
     lazy_load
 
@@ -19,7 +27,7 @@ class Restaurant < ApplicationRecord
 
   def link
     lazy_load
-    
+
     @place[ 'website' ] if @place.present?
   end
 

@@ -2,7 +2,7 @@ class NeverAgainsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    restaurant = Restaurant.find( params[ :restaurant_id ] )
+    restaurant = Restaurant.from_place_id( params[ :place_id ] )
 
     NeverAgain.transaction do
       current_user.never_again( restaurant ) unless current_user.never_agained?( restaurant )
@@ -18,7 +18,7 @@ class NeverAgainsController < ApplicationController
       never_again.user.unnever_again( never_again.restaurant ) if never_again.user == current_user
       redirect_to never_again.restaurant
     else
-      redirect_to Restaurant.find( params[ :restaurant_id ] )
+      redirect_to Restaurant.from_place_id( params[ :place_id ] )
     end
   end
 

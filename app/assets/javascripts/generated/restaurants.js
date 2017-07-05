@@ -1,10 +1,9 @@
 "use strict";
 var Restaurants;
 (function (Restaurants) {
-    function initNewMap() {
-        console.log('Restaurants.initNewMap()');
-        var restaurantPlaceIdInput = document.getElementById('restaurant-place-id');
-        var mapElement = document.getElementById('restaurant-map');
+    function initSearchMap() {
+        console.log('Restaurants.initSearchMap()');
+        var mapElement = document.getElementById('restaurant-search-map');
         var map = new google.maps.Map(mapElement, {
             center: { lat: 39.0915837, lng: -94.8559123 },
             zoom: 12,
@@ -19,12 +18,14 @@ var Restaurants;
         var infoWindow = new google.maps.InfoWindow();
         var placesService = new google.maps.places.PlacesService(map);
         var myLocationMarker = new MyLocationMarker(map);
-        var mapSearchInput = document.getElementById('map-search');
-        $(mapSearchInput).on('keypress keydown keyup', function (e) {
-            if (e.keyCode == 13) {
-                e.preventDefault();
-            }
+        google.maps.event.addDomListenerOnce(window, 'turbolinks:before-render', function () {
+            myLocationMarker.setMap(null);
         });
+        var mapSearchInput = document.createElement('input');
+        mapSearchInput.id = 'restaurant-search-input';
+        mapSearchInput.type = 'text';
+        mapSearchInput.classList.add('form-control');
+        mapSearchInput.placeholder = 'Search for restaurants...';
         var searchBox = new google.maps.places.SearchBox(mapSearchInput);
         map.controls[google.maps.ControlPosition.TOP_CENTER].push(mapSearchInput);
         map.addListener('bounds_changed', function () {
@@ -54,10 +55,9 @@ var Restaurants;
                 markers.push(marker);
                 marker.addListener('click', function () {
                     placesService.getDetails({ placeId: place.place_id }, function (result, status) {
-                        restaurantPlaceIdInput.setAttribute('value', place.place_id);
                         if (status === google.maps.places.PlacesServiceStatus.OK) {
                             console.log(result);
-                            infoWindow.setContent("\n                                <center>\n                                    <b>" + place.name + "</b>\n                                    <br>\n                                    " + result.vicinity + "\n                                </center>");
+                            infoWindow.setContent("\n                                <center>\n                                    <b><a href=\"/" + place.place_id + "\">" + place.name + "</a></b>\n                                    <br>\n                                    " + result.vicinity + "\n                                </center>");
                             infoWindow.open(map, marker);
                         }
                     });
@@ -78,7 +78,7 @@ var Restaurants;
             }
         });
     }
-    Restaurants.initNewMap = initNewMap;
+    Restaurants.initSearchMap = initSearchMap;
     function initShowMap() {
         console.log('Restaurants.initShowMap()');
         var mapElement = document.getElementById('restaurant-map');
@@ -102,8 +102,8 @@ var Restaurants;
     }
     Restaurants.initShowMap = initShowMap;
 })(Restaurants || (Restaurants = {}));
-RandRestaurant.pageReady('restaurants', 'new', function () {
-    Restaurants.initNewMap();
+RandRestaurant.pageReady('restaurants', 'search', function () {
+    Restaurants.initSearchMap();
 });
 RandRestaurant.pageReady('restaurants', 'show', function () {
     Restaurants.initShowMap();
