@@ -9,7 +9,7 @@
 
     <div class="form-group">
     <%= f.label :time, class: "control-label" %>
-    <%= f.datetime_field :time, class: "form-control" %>
+    <%= f.datetime_field :time, class: "form-control", step: 1 %>
     </div>
 
     <%= f.submit yield( :button_text ), class: "btn btn-primary btn-lg btn-block" %>

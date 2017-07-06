@@ -2,22 +2,9 @@
 {
     &.action__search
     {
-        #restaurant-search-map
+        .map
         {
             height: 400px;
-            margin-bottom: 16px;
-
-            #restaurant-search-input
-            {
-                visibility: visible;
-            }
-        }
-
-        #restaurant-search-input
-        {
-            width: 80%;
-            margin: 10px;
-            visibility: hidden
         }
     }
 
@@ -50,12 +37,6 @@
             {
                 color: #d68317;
             }
-        }
-
-        #restaurant-map
-        {
-            height: 300px;
-            margin-bottom: 16px;
         }
     }
 }

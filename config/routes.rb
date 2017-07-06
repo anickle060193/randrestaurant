@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   resources :never_agains, only: [ :create, :destroy ]
 
   resources :meals, only: [ :show, :new, :create, :edit, :update ]
+
+  resources :possible_meal_restaurants, only: [ :create, :destroy ]
 end

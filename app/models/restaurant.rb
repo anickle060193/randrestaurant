@@ -9,6 +9,9 @@ class Restaurant < ApplicationRecord
 
   has_many :meals, dependent: :nullify
 
+  has_many :possible_meal_restaurants
+  has_many :possible_meals, through: :possible_meal_restaurants, source: :meal, dependent: :destroy
+
   validates :place_id, presence: true, uniqueness: true
 
   def self.from_place_id( place_id )

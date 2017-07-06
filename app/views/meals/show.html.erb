@@ -1,8 +1,45 @@
-<div class="well">
-  <center>
-    <h1>
-      <%= @meal.name %>
-    </h1>
-    <%= @meal.time.strftime( "%B %d, %Y at %I:%M %p" ) %>
-  </center>
+<div class="row">
+
+  <div class="col-md-8 col-md-offset-2">
+    <div class="well">
+      <center>
+        <h1>
+          <%= @meal.name %>
+        </h1>
+        <%= @meal.time.strftime( "%B %d, %Y at %I:%M %p" ) %>
+      </center>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+
+    <%= form_for @meal.possible_meal_restaurants.new, remote: true, html: { id: "new-possible-location-form", class: "hidden" } do |f| %>
+      <%= hidden_field_tag :meal_id, @meal.id %>
+      <%= hidden_field_tag :place_id, '', id: "new-possible-location-place-id-input" %>
+      <%= f.submit "Add Possible Location", class: "btn btn-link" %>
+    <% end %>
+
+    <% @meal.possible_locations.each do |possible_location| %>
+      <%= form_for @meal.possible_meal_restaurants.find_by( restaurant: possible_location ), method: :delete, remote: true do |f| %>
+        <%= hidden_field_tag :%>
+      <% end %>
+
+      <%= form_for current_user.restaurant_likes.find_by( restaurant: @restaurant ), method: :delete, remote: true do |f| %>
+        <%= hidden_field_tag :place_id, @restaurant.place_id %>
+        <%= button_tag type: "submit", class: "btn btn-link", title: "Unlike", aria_label: "Unlike" do %>
+          <%= icon( 'thumbs-up', class: 'fa-2x' ) %>
+        <% end %>
+      <% end %>
+
+    <% end %>
+
+    <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_locations: @meal.possible_locations.pluck( :place_id ) } %>
+
+  </div>
+
+  <div class="col-md-6">
+    <h3>Possible Locations</h3>
+    <%= render @meal.possible_locations %>
+  </div>
+
 </div>
