@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :never_agains
   has_many :never_agained_restaurants, through: :never_agains, source: :restaurant, dependent: :destroy
 
+  has_many :organized_meals, class_name: 'Meal', foreign_key: 'user_id', dependent: :nullify
+
   def like( restaurant )
     restaurants << restaurant
   end

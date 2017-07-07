@@ -1,31 +1,38 @@
 namespace Meals
 {
+    let newPossibleRestaurantForm: JQuery<HTMLElement>;
+    let newPossibleRestaurantPlaceIdInput: JQuery<HTMLElement>;
+
+    export function initShowFirst()
+    {
+        console.log( 'Meals.initShowFirst()' );
+
+        newPossibleRestaurantForm = $( '#new-possible-restaurant-form' ).remove().removeClass( 'hidden' );
+        newPossibleRestaurantPlaceIdInput = $( newPossibleRestaurantForm ).find( '#new-possible-restaurant-place-id-input' );
+    }
+
     export function initShow()
     {
         console.log( 'Meals.initShow()' );
 
-        let newPossibleLocationForm = document.getElementById( 'new-possible-location-form' );
-        let newPossibleLocationPlaceIdInput = document.getElementById( 'new-possible-location-place-id-input' );
+        let mapElement = $( '#meal-search-map' ).throwIfEmpty();
+        let possiblePlaces = <Array<string>>mapElement.data( 'possible-restaurants' );
 
-        newPossibleLocationForm.parentElement.removeChild( newPossibleLocationForm );
-        newPossibleLocationForm.classList.remove( 'hidden' );
-
-        let mapElement = document.getElementById( 'meal-search-map' );
-        SearchMap.createSearchMap( mapElement, function( place )
+        SearchMap.createSearchMap( mapElement[ 0 ], function( place )
         {
-            let div = document.createElement( 'div' );
-            div.innerHTML = `
-                <center>
-                    <b>${place.name}</b>
-                    <br>
-                    ${place.vicinity}
-                </center>`;
-            let center = div.firstElementChild;
-            newPossibleLocationPlaceIdInput.setAttribute( 'value', place.place_id );
-            center.appendChild( newPossibleLocationForm );
-            return center;
+            let infoWindowContent = $( '<center>' )
+                    .append( $( '<b>' ).text( place.name ) )
+                    .append( $( '<br>' ) )
+                    .append( place.vicinity );
+            if( possiblePlaces.indexOf( place.place_id ) === -1 )
+            {
+                newPossibleRestaurantPlaceIdInput.val( place.place_id );
+                infoWindowContent.append( newPossibleRestaurantForm )
+            }
+            return infoWindowContent[ 0 ];
         } );
     }
 }
 
+RandRestaurant.pageReadyFirst( 'meals', 'show', Meals.initShowFirst );
 RandRestaurant.pageReady( 'meals', 'show', Meals.initShow );

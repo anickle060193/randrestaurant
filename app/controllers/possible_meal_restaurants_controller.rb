@@ -4,7 +4,7 @@ class PossibleMealRestaurantsController < ApplicationController
   def create
     meal = Meal.find( params[ :meal_id ] )
     restaurant = Restaurant.from_place_id( params[ :place_id ] )
-    meal.possible_locations << restaurant unless meal.possible_locations.exists?( restaurant.id )
+    meal.possible_restaurants << restaurant unless meal.possible_restaurants.exists?( restaurant.id )
     redirect_to meal
   end
 

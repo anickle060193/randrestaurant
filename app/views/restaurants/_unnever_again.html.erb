@@ -1,4 +1,4 @@
-<%= form_for current_user.never_agains.find_by( restaurant: @restaurant ), method: :delete, remote: true do |f| %>
+<%= form_for current_user.never_agains.find_by( restaurant: @restaurant ), method: :delete do |f| %>
   <%= hidden_field_tag :place_id, @restaurant.place_id %>
   <%= button_tag "Un-Never Again", type: "submit", class: "btn btn-default" %>
 <% end %>

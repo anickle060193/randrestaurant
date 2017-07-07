@@ -1,5 +1,5 @@
 class MealsController < ApplicationController
-  before_action :authenticate_user!, only: [ :new, :create ]
+  before_action :authenticate_user!
   before_action :find_meal, only: [ :show, :edit, :update ]
   before_action :correct_user, only: [ :edit, :update ]
 
@@ -8,7 +8,6 @@ class MealsController < ApplicationController
 
   def new
     @meal = Meal.new
-    @meal.time = DateTime.now
   end
 
   def create

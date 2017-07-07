@@ -10,16 +10,31 @@ namespace RandRestaurant
         $( document ).on( 'turbolinks:load', callback );
     }
 
-    export function pageReady( controller: string, action: string, callback: any )
+    export function readyFirst( callback: any )
     {
-        ready( function()
+        $( document ).one( 'turbolinks:load', callback );
+    }
+
+    function createPageReadyCallback( controller: string, action: string, callback: any )
+    {
+        return function()
         {
             let selector = `[data-controller="${controller}"][data-action="${action}"]`;
             if( $( selector ).length > 0 )
             {
                 callback()
             }
-        } );
+        };
+    }
+
+    export function pageReady( controller: string, action: string, callback: any )
+    {
+        ready( createPageReadyCallback( controller, action, callback ) );
+    }
+
+    export function pageReadyFirst( controller: string, action: string, callback: any )
+    {
+        readyFirst( createPageReadyCallback( controller, action, callback ) );
     }
 }
 

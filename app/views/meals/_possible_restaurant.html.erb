@@ -1,0 +1,10 @@
+<li class="list-group-item">
+  <%= link_to possible_restaurant.name, possible_restaurant %>
+
+  <% if @meal.organizer == current_user %>
+    <%= form_for @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), method: :delete do |f| %>
+      <%= hidden_field_tag :meal_id, @meal.id %>
+      <%= f.submit 'Remove', class: 'btn btn-link' %>
+    <% end %>
+  <% end %>
+</li>

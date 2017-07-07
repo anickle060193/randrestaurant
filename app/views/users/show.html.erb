@@ -3,15 +3,29 @@
 </div>
 
 <div class="row">
+
   <div class="col-md-4">
-    <h2>Restaurants</h2>
-    <% if @user.restaurants.any? %>
+    <h2>Liked Restaurants</h2>
+    <% if @liked_restaurants.any? %>
       <div class="list-group">
-        <%= render @restaurants %>
+        <%= render @liked_restaurants %>
       </div>
-      <%= paginate @restaurants, param_name: :restaurant_page %>
+      <%= paginate @liked_restaurants, param_name: :liked_restaurants_page %>
     <% else %>
       No liked restaurants...
     <% end %>
   </div>
+
+  <div class="col-md-4">
+    <h2>Organized Meals</h2>
+    <% if @organized_meals.any? %>
+      <div class="list-group">
+        <%= render @organized_meals %>
+      </div>
+      <%= paginate @organized_meals, param_name: :organized_meals_page %>
+    <% else %>
+      No organized meals...
+    <% end %>
+  </div>
+
 </div>
