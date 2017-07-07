@@ -1,7 +1,8 @@
-//= require jquery/dist/jquery
-//= require jquery-ujs/src/rails
-//= require turbolinks/dist/turbolinks
-//= require bootstrap/dist/js/bootstrap
+//= require jquery
+//= require jquery_ujs
+//= require turbolinks
+//= require bootstrap-sprockets
+
 //= require ./generated/init
 //= require ./generated/my_location_marker
 //= require ./generated/search_map
