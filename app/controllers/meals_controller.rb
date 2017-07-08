@@ -1,7 +1,7 @@
 class MealsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_meal, only: [ :show, :edit, :update ]
-  before_action :correct_user, only: [ :edit, :update ]
+  before_action :find_meal, only: [ :show, :edit, :update, :destroy ]
+  before_action :correct_user, only: [ :edit, :update, :destroy ]
 
   def show
     if params[ :attendee_search ].present?
@@ -38,6 +38,15 @@ class MealsController < ApplicationController
       redirect_to @meal
     else
       render :edit
+    end
+  end
+
+  def destroy
+    if @meal.destroy
+      flash[ :alert ] = 'Meal deleted'
+      redirect_to :root
+    else
+      redirect_to @meal
     end
   end
 

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :restaurant_likes, only: [ :create, :destroy ]
   resources :never_agains, only: [ :create, :destroy ]
 
-  resources :meals, only: [ :show, :new, :create, :edit, :update ]
+  resources :meals, only: [ :show, :new, :create, :edit, :update, :destroy ]
 
   resources :possible_meal_restaurants, only: [ :create, :destroy ]
 

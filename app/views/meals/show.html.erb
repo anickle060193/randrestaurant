@@ -28,6 +28,7 @@
               </li>
             <% end %>
             <li><%= link_to 'Edit Meal', edit_meal_path( @meal ) %></li>
+            <li><%= link_to 'Delete Meal', @meal, method: :delete %></li>
           </ul>
         </div>
       <% end %>
