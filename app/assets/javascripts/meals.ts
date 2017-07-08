@@ -1,5 +1,7 @@
 namespace Meals
 {
+    export let searchMap: SearchMap.SearchMap;
+
     let newPossibleRestaurantForm: JQuery<HTMLElement>;
     let newPossibleRestaurantPlaceIdInput: JQuery<HTMLElement>;
 
@@ -17,7 +19,7 @@ namespace Meals
 
         let mapElement = $( '#meal-search-map' ).throwIfEmpty();
 
-        new SearchMap.SearchMap( mapElement[ 0 ], {
+        searchMap = new SearchMap.SearchMap( mapElement[ 0 ], {
             placeInfoWindowContentCreator: function( place, isExistingPlace )
             {
                 let infoWindowContent = $( '<center>' )

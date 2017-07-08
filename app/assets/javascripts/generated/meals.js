@@ -12,7 +12,7 @@ var Meals;
     function initShow() {
         console.log('Meals.initShow()');
         var mapElement = $('#meal-search-map').throwIfEmpty();
-        new SearchMap.SearchMap(mapElement[0], {
+        Meals.searchMap = new SearchMap.SearchMap(mapElement[0], {
             placeInfoWindowContentCreator: function (place, isExistingPlace) {
                 var infoWindowContent = $('<center>')
                     .append($('<b>').text(place.name))

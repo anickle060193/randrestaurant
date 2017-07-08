@@ -17,10 +17,11 @@ namespace SearchMap
         private placesService: google.maps.places.PlacesService;
         private myLocationMarker: MyLocationMarker;
         private searchBox: google.maps.places.SearchBox;
-        private markers: google.maps.Marker[];
+        private markers: { [ placeId: string ]: google.maps.Marker };
 
         private placeInfoWindowContentCreator?: PlaceInfoWindowContentCreator;
         private existingPlaces: google.maps.places.PlaceResult[];
+        private existingPlaceMarkers: { [ existingPlaceId: string ]: google.maps.Marker };
 
         constructor( mapElement: HTMLElement, options?: MapOptions )
         {
@@ -68,9 +69,10 @@ namespace SearchMap
 
             this.map.addListener( 'bounds_changed', () => this.onMapBoundsChange() );
 
-            this.markers = [ ];
+            this.markers = { };
             this.searchBox.addListener( 'places_changed', () => this.onSearchBoxPlacesChanged() );
 
+            this.existingPlaceMarkers = { };
             if( this.existingPlaces.length > 0 )
             {
                 let bounds = new google.maps.LatLngBounds();
@@ -81,14 +83,7 @@ namespace SearchMap
                         return;
                     }
 
-                    let marker = new google.maps.Marker( {
-                        map: this.map,
-                        title: existingPlace.name,
-                        position: existingPlace.geometry.location,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                    } );
-                    marker.set( MARKER_PLACE_KEY, existingPlace );
-                    marker.addListener( 'click', () => this.onMarkerClicked( marker, true ) );
+                    this.addExistingPlaceMarker( existingPlace );
 
                     if( existingPlace.geometry.viewport )
                     {
@@ -105,6 +100,19 @@ namespace SearchMap
 
             this.myLocationMarker = new MyLocationMarker( this.map, this.existingPlaces.length === 0 );
             google.maps.event.addDomListenerOnce( window, 'turbolinks:before-render', () => this.onTurbolinksBeforeRender() );
+        }
+
+        private addExistingPlaceMarker( existingPlace: google.maps.places.PlaceResult )
+        {
+            let marker = new google.maps.Marker( {
+                map: this.map,
+                title: existingPlace.name,
+                position: existingPlace.geometry.location,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            } );
+            marker.set( MARKER_PLACE_KEY, existingPlace );
+            marker.addListener( 'click', () => this.onMarkerClicked( marker, true ) );
+            this.existingPlaceMarkers[ existingPlace.place_id ] = marker;
         }
 
         private onTurbolinksBeforeRender()
@@ -127,12 +135,12 @@ namespace SearchMap
                 return;
             }
 
-            for( let marker of this.markers )
+            for( let placeId in this.markers )
             {
-                marker.setMap( null );
+                this.markers[ placeId ].setMap( null );
             }
 
-            this.markers = [ ];
+            this.markers = { };
 
             let bounds = new google.maps.LatLngBounds();
             for( let place of places )
@@ -155,7 +163,7 @@ namespace SearchMap
                 marker.setMap( this.map );
 
                 marker.set( MARKER_PLACE_KEY, place );
-                this.markers.push( marker );
+                this.markers[ place.place_id ] = marker;
 
                 marker.addListener( 'click', () => this.onMarkerClicked( marker, false ) );
 
@@ -185,6 +193,37 @@ namespace SearchMap
                             let infoWindowContent = this.placeInfoWindowContentCreator( result, isExistingPlace );
                             this.infoWindow.setContent( infoWindowContent );
                             this.infoWindow.open( this.map, marker );
+                        }
+                    }
+                } );
+            }
+        }
+
+        public removeExistingPlace( place_id: string )
+        {
+            this.existingPlaces = this.existingPlaces.filter( ep => ep.place_id !== place_id );
+            if( place_id in this.existingPlaceMarkers )
+            {
+                let marker = this.existingPlaceMarkers[ place_id ];
+                marker.setMap( null );
+                delete this.existingPlaceMarkers[ place_id ];
+            }
+        }
+
+        public addExistingPlace( place_id: string )
+        {
+            if( !this.existingPlaces.some( ep => ep.place_id === place_id ) )
+            {
+                this.placesService.getDetails( { placeId: place_id }, ( result, status ) =>
+                {
+                    if( status === google.maps.places.PlacesServiceStatus.OK )
+                    {
+                        this.addExistingPlaceMarker( result );
+                        if( place_id in this.markers )
+                        {
+                            let marker = this.markers[ place_id ];
+                            marker.setMap( null );
+                            delete this.markers[ place_id ];
                         }
                     }
                 } );

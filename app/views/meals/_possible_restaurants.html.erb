@@ -1,0 +1,9 @@
+<div id="possible-restaurants">
+  <% if @meal.possible_restaurants.any? %>
+    <ul class="list-group">
+      <%= render partial: 'meals/possible_restaurant', collection: @meal.possible_restaurants %>
+    </ul>
+  <% else %>
+    <p>No possible restaurants added yet...</p>
+  <% end %>
+</div>

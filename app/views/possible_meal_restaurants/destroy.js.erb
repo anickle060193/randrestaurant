@@ -1,0 +1,6 @@
+$( '#possible-restaurants' ).replaceWith( $( '<%= escape_javascript( render 'meals/possible_restaurants' ) %>' ) );
+
+if( Meals.searchMap )
+{
+    Meals.searchMap.removeExistingPlace( '<%= @removed_possible_restaurant.place_id %>' );
+}

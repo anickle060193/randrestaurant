@@ -38,22 +38,17 @@ var SearchMap;
             this.searchBox = new google.maps.places.SearchBox(mapSearchInput);
             this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(mapSearchInput);
             this.map.addListener('bounds_changed', function () { return _this.onMapBoundsChange(); });
-            this.markers = [];
+            this.markers = {};
             this.searchBox.addListener('places_changed', function () { return _this.onSearchBoxPlacesChanged(); });
+            this.existingPlaceMarkers = {};
             if (this.existingPlaces.length > 0) {
                 var bounds = new google.maps.LatLngBounds();
-                var _loop_1 = function (existingPlace) {
+                for (var _i = 0, _a = this.existingPlaces; _i < _a.length; _i++) {
+                    var existingPlace = _a[_i];
                     if (!existingPlace.geometry) {
-                        return { value: void 0 };
+                        return;
                     }
-                    var marker = new google.maps.Marker({
-                        map: this_1.map,
-                        title: existingPlace.name,
-                        position: existingPlace.geometry.location,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                    });
-                    marker.set(MARKER_PLACE_KEY, existingPlace);
-                    marker.addListener('click', function () { return _this.onMarkerClicked(marker, true); });
+                    this.addExistingPlaceMarker(existingPlace);
                     if (existingPlace.geometry.viewport) {
                         var viewport = existingPlace.geometry.viewport;
                         bounds.union(new google.maps.LatLngBounds(viewport.southwest, viewport.northeast));
@@ -61,19 +56,24 @@ var SearchMap;
                     else {
                         bounds.extend(existingPlace.geometry.location);
                     }
-                };
-                var this_1 = this;
-                for (var _i = 0, _a = this.existingPlaces; _i < _a.length; _i++) {
-                    var existingPlace = _a[_i];
-                    var state_1 = _loop_1(existingPlace);
-                    if (typeof state_1 === "object")
-                        return state_1.value;
                 }
                 this.map.fitBounds(bounds);
             }
             this.myLocationMarker = new MyLocationMarker(this.map, this.existingPlaces.length === 0);
             google.maps.event.addDomListenerOnce(window, 'turbolinks:before-render', function () { return _this.onTurbolinksBeforeRender(); });
         }
+        SearchMap.prototype.addExistingPlaceMarker = function (existingPlace) {
+            var _this = this;
+            var marker = new google.maps.Marker({
+                map: this.map,
+                title: existingPlace.name,
+                position: existingPlace.geometry.location,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            });
+            marker.set(MARKER_PLACE_KEY, existingPlace);
+            marker.addListener('click', function () { return _this.onMarkerClicked(marker, true); });
+            this.existingPlaceMarkers[existingPlace.place_id] = marker;
+        };
         SearchMap.prototype.onTurbolinksBeforeRender = function () {
             this.myLocationMarker.setMap(null);
         };
@@ -87,27 +87,26 @@ var SearchMap;
             if (places.length == 0) {
                 return;
             }
-            for (var _i = 0, _a = this.markers; _i < _a.length; _i++) {
-                var marker = _a[_i];
-                marker.setMap(null);
+            for (var placeId in this.markers) {
+                this.markers[placeId].setMap(null);
             }
-            this.markers = [];
+            this.markers = {};
             var bounds = new google.maps.LatLngBounds();
-            var _loop_2 = function (place) {
+            var _loop_1 = function (place) {
                 if (!place.geometry) {
                     return "continue";
                 }
-                if (this_2.existingPlaces.some(function (ep) { return ep.place_id === place.place_id; })) {
+                if (this_1.existingPlaces.some(function (ep) { return ep.place_id === place.place_id; })) {
                     return "continue";
                 }
                 var marker = new google.maps.Marker({
-                    map: this_2.map,
+                    map: this_1.map,
                     title: place.name,
                     position: place.geometry.location
                 });
-                marker.setMap(this_2.map);
+                marker.setMap(this_1.map);
                 marker.set(MARKER_PLACE_KEY, place);
-                this_2.markers.push(marker);
+                this_1.markers[place.place_id] = marker;
                 marker.addListener('click', function () { return _this.onMarkerClicked(marker, false); });
                 if (place.geometry.viewport) {
                     bounds.union(place.geometry.viewport);
@@ -115,12 +114,12 @@ var SearchMap;
                 else {
                     bounds.extend(place.geometry.location);
                 }
-                this_2.map.fitBounds(bounds);
+                this_1.map.fitBounds(bounds);
             };
-            var this_2 = this;
-            for (var _b = 0, places_1 = places; _b < places_1.length; _b++) {
-                var place = places_1[_b];
-                _loop_2(place);
+            var this_1 = this;
+            for (var _i = 0, places_1 = places; _i < places_1.length; _i++) {
+                var place = places_1[_i];
+                _loop_1(place);
             }
         };
         SearchMap.prototype.onMarkerClicked = function (marker, isExistingPlace) {
@@ -133,6 +132,29 @@ var SearchMap;
                             var infoWindowContent = _this.placeInfoWindowContentCreator(result, isExistingPlace);
                             _this.infoWindow.setContent(infoWindowContent);
                             _this.infoWindow.open(_this.map, marker);
+                        }
+                    }
+                });
+            }
+        };
+        SearchMap.prototype.removeExistingPlace = function (place_id) {
+            this.existingPlaces = this.existingPlaces.filter(function (ep) { return ep.place_id !== place_id; });
+            if (place_id in this.existingPlaceMarkers) {
+                var marker = this.existingPlaceMarkers[place_id];
+                marker.setMap(null);
+                delete this.existingPlaceMarkers[place_id];
+            }
+        };
+        SearchMap.prototype.addExistingPlace = function (place_id) {
+            var _this = this;
+            if (!this.existingPlaces.some(function (ep) { return ep.place_id === place_id; })) {
+                this.placesService.getDetails({ placeId: place_id }, function (result, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        _this.addExistingPlaceMarker(result);
+                        if (place_id in _this.markers) {
+                            var marker = _this.markers[place_id];
+                            marker.setMap(null);
+                            delete _this.markers[place_id];
                         }
                     }
                 });
