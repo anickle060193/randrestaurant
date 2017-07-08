@@ -7,5 +7,5 @@ class Meal < ApplicationRecord
 
   validates :name, presence: true
   validates :time, presence: true
-  validates :user_id, presence: true
+  validates :organizer, presence: true
 end
