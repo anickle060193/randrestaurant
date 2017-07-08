@@ -15,9 +15,19 @@ class PossibleMealRestaurantsController < ApplicationController
   def destroy
     possible_meal_restaurant = PossibleMealRestaurant.find_by( id: params[ :id ] )
     if possible_meal_restaurant.present?
-      possible_meal_restaurant.destroy()
-      @meal = possible_meal_restaurant.meal
-      @removed_possible_restaurant = possible_meal_restaurant.restaurant
+      PossibleMealRestaurant.transaction do
+        @meal = possible_meal_restaurant.meal
+        @removed_possible_restaurant = possible_meal_restaurant.restaurant
+
+        possible_meal_restaurant.destroy!
+
+        if @removed_possible_restaurant == @meal.restaurant
+          @meal.restaurant = nil
+          @meal.save!
+          redirect_to @meal
+          return
+        end
+      end
     else
       @meal = Meal.find( params[ :meal_id ] )
       @removed_possible_restaurant = Restaurant.find( params[ :restaurant_id ] )
