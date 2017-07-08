@@ -4,17 +4,19 @@ namespace Restaurants
     {
         console.log( 'Restaurants.initSearchMap()' );
 
-        let mapElement: HTMLElement = document.getElementById( 'restaurant-search-map' );
-        SearchMap.createSearchMap( mapElement, function( place )
-        {
-            let div = document.createElement( 'div' );
-            div.innerHTML = `
-                <center>
-                    <b><a href="/${place.place_id}">${place.name}</a></b>
-                    <br>
-                    ${place.vicinity}
-                </center>`;
-            return div.firstElementChild;
+        let mapElement = $( '#restaurant-search-map' ).throwIfEmpty();
+        new SearchMap.SearchMap( mapElement[ 0 ], {
+            placeInfoWindowContentCreator: function( place )
+            {
+                let div = document.createElement( 'div' );
+                div.innerHTML = `
+                    <center>
+                        <b><a href="/${place.place_id}">${place.name}</a></b>
+                        <br>
+                        ${place.vicinity}
+                    </center>`;
+                return <HTMLElement>div.firstElementChild;
+            }
         } );
     }
 
@@ -22,9 +24,9 @@ namespace Restaurants
     {
         console.log( 'Restaurants.initShowMap()' );
 
-        let mapElement = document.getElementById( 'restaurant-map' );
-        let restaurantLocation = <google.maps.LatLngLiteral>JSON.parse( mapElement.dataset.location );
-        let map = new google.maps.Map( mapElement, {
+        let mapElement = $( '#restaurant-map' ).throwIfEmpty();
+        let restaurantLocation = <google.maps.LatLngLiteral>mapElement.data( 'location' );
+        let map = new google.maps.Map( mapElement[ 0 ], {
             center: restaurantLocation,
             zoom: 15,
             disableDefaultUI: true,

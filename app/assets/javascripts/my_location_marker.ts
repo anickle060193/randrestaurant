@@ -1,15 +1,27 @@
 class MyLocationMarker extends google.maps.OverlayView
 {
-    private map: google.maps.Map;
-    private svg: SVGSVGElement = null;
+    private map: google.maps.Map | null = null;
+    private svg: SVGSVGElement;
     private watchId: number = 0;
-    private position: google.maps.LatLng = null;
+    private position: google.maps.LatLng | null = null;
     private accuracy: number = 0;
+    private centerFirstPosition: boolean;
     private firstPosition: boolean = true;
 
-    constructor( map: google.maps.Map )
+    constructor( map: google.maps.Map, centerFirstPosition?: boolean )
     {
         super();
+
+        let div = document.createElement( 'div' );
+        div.innerHTML = `
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="position:relative;">
+                <circle cx="50" cy="50" r="49" fill="blue" fill-opacity="0.1" />
+                <circle cx="50" cy="50" r="20" fill="blue" fill-opacity="0.85" stroke="white" stroke-width="8" />
+            </svg>
+        `;
+        this.svg = <SVGSVGElement>div.firstElementChild;
+
+        this.centerFirstPosition = centerFirstPosition !== undefined && centerFirstPosition;
 
         this.setMap( map );
     }
@@ -24,7 +36,10 @@ class MyLocationMarker extends google.maps.OverlayView
         if( this.firstPosition )
         {
             this.firstPosition = false;
-            this.map.setCenter( coords );
+            if( this.centerFirstPosition && this.map )
+            {
+                this.map.setCenter( coords );
+            }
         }
     }
 
@@ -37,7 +52,7 @@ class MyLocationMarker extends google.maps.OverlayView
         this.draw();
     }
 
-    setMap( map: google.maps.Map )
+    setMap( map: google.maps.Map | null )
     {
         this.map = map;
         super.setMap( this.map );
@@ -45,15 +60,6 @@ class MyLocationMarker extends google.maps.OverlayView
 
     onAdd()
     {
-        let div = document.createElement( 'div' );
-        div.innerHTML = `
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="position:relative;">
-                <circle cx="50" cy="50" r="49" fill="blue" fill-opacity="0.1" />
-                <circle cx="50" cy="50" r="20" fill="blue" fill-opacity="0.85" stroke="white" stroke-width="8" />
-            </svg>
-        `;
-
-        this.svg = <SVGSVGElement>div.firstElementChild;
         this.getPanes().mapPane.appendChild( this.svg );
 
         if( navigator.geolocation )
@@ -95,7 +101,10 @@ class MyLocationMarker extends google.maps.OverlayView
 
     onRemove()
     {
-        this.svg.parentElement.removeChild( this.svg );
+        if( this.svg.parentElement )
+        {
+            this.svg.parentElement.removeChild( this.svg );
+        }
         navigator.geolocation.clearWatch( this.watchId );
     }
 }

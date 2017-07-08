@@ -11,13 +11,17 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var MyLocationMarker = (function (_super) {
     __extends(MyLocationMarker, _super);
-    function MyLocationMarker(map) {
+    function MyLocationMarker(map, centerFirstPosition) {
         var _this = _super.call(this) || this;
-        _this.svg = null;
+        _this.map = null;
         _this.watchId = 0;
         _this.position = null;
         _this.accuracy = 0;
         _this.firstPosition = true;
+        var div = document.createElement('div');
+        div.innerHTML = "\n            <svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" style=\"position:relative;\">\n                <circle cx=\"50\" cy=\"50\" r=\"49\" fill=\"blue\" fill-opacity=\"0.1\" />\n                <circle cx=\"50\" cy=\"50\" r=\"20\" fill=\"blue\" fill-opacity=\"0.85\" stroke=\"white\" stroke-width=\"8\" />\n            </svg>\n        ";
+        _this.svg = div.firstElementChild;
+        _this.centerFirstPosition = centerFirstPosition !== undefined && centerFirstPosition;
         _this.setMap(map);
         return _this;
     }
@@ -28,7 +32,9 @@ var MyLocationMarker = (function (_super) {
         this.draw();
         if (this.firstPosition) {
             this.firstPosition = false;
-            this.map.setCenter(coords);
+            if (this.centerFirstPosition && this.map) {
+                this.map.setCenter(coords);
+            }
         }
     };
     MyLocationMarker.prototype.onWatchPositionError = function (error) {
@@ -43,9 +49,6 @@ var MyLocationMarker = (function (_super) {
     };
     MyLocationMarker.prototype.onAdd = function () {
         var _this = this;
-        var div = document.createElement('div');
-        div.innerHTML = "\n            <svg viewBox=\"0 0 100 100\" xmlns=\"http://www.w3.org/2000/svg\" style=\"position:relative;\">\n                <circle cx=\"50\" cy=\"50\" r=\"49\" fill=\"blue\" fill-opacity=\"0.1\" />\n                <circle cx=\"50\" cy=\"50\" r=\"20\" fill=\"blue\" fill-opacity=\"0.85\" stroke=\"white\" stroke-width=\"8\" />\n            </svg>\n        ";
-        this.svg = div.firstElementChild;
         this.getPanes().mapPane.appendChild(this.svg);
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) { return _this.onWatchPositionSuccess(position); }, function (error) { return _this.onWatchPositionError(error); });
@@ -68,7 +71,9 @@ var MyLocationMarker = (function (_super) {
         }
     };
     MyLocationMarker.prototype.onRemove = function () {
-        this.svg.parentElement.removeChild(this.svg);
+        if (this.svg.parentElement) {
+            this.svg.parentElement.removeChild(this.svg);
+        }
         navigator.geolocation.clearWatch(this.watchId);
     };
     return MyLocationMarker;

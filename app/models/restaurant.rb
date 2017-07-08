@@ -22,30 +22,24 @@ class Restaurant < ApplicationRecord
     self.place_id
   end
 
-  def name
-    lazy_load
+  def place
+    if @place.blank? && place_id.present?
+      @place = GoogleMaps.new().place_details( self.place_id )
+    end
 
-    @place[ 'name' ] if @place.present?
+    @place
+  end
+
+  def name
+    place[ 'name' ] if place.present?
   end
 
   def link
-    lazy_load
-
-    @place[ 'website' ] if @place.present?
+    place[ 'website' ] if place.present?
   end
 
   def location
-    lazy_load
-
-    @place[ 'geometry' ][ 'location' ] if @place.present?
+    place[ 'geometry' ][ 'location' ] if place.present?
   end
-
-  private
-
-    def lazy_load
-      if @place.blank? && place_id.present?
-        @place = GoogleMaps.new().place_details( self.place_id )
-      end
-    end
 
 end

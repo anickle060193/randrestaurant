@@ -13,7 +13,7 @@
 
   <div class="col-md-6">
 
-    <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: @meal.possible_restaurants.pluck( :place_id ) } %>
+    <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: @meal.possible_restaurants.map { |possible_restaurant| possible_restaurant.place } } %>
 
   </div>
 

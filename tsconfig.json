@@ -2,8 +2,12 @@
     "compilerOptions": {
         "noImplicitAny": true,
         "noImplicitReturns": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "alwaysStrict": true,
         "noEmitOnError": true,
         "sourceMap": true,
         "target": "es5",
@@ -11,7 +15,6 @@
         "moduleResolution": "node",
         "outDir": "app/assets/javascripts/generated",
         "watch": true,
-        "alwaysStrict": true,
         "lib": [
             "dom",
             "es5",

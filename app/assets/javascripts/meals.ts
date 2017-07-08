@@ -7,7 +7,7 @@ namespace Meals
     {
         console.log( 'Meals.initShowFirst()' );
 
-        newPossibleRestaurantForm = $( '#new-possible-restaurant-form' ).remove().removeClass( 'hidden' );
+        newPossibleRestaurantForm = $( '#new-possible-restaurant-form' ).detach().removeClass( 'hidden' );
         newPossibleRestaurantPlaceIdInput = $( newPossibleRestaurantForm ).find( '#new-possible-restaurant-place-id-input' );
     }
 
@@ -16,20 +16,22 @@ namespace Meals
         console.log( 'Meals.initShow()' );
 
         let mapElement = $( '#meal-search-map' ).throwIfEmpty();
-        let possiblePlaces = <Array<string>>mapElement.data( 'possible-restaurants' );
 
-        SearchMap.createSearchMap( mapElement[ 0 ], function( place )
-        {
-            let infoWindowContent = $( '<center>' )
-                    .append( $( '<b>' ).text( place.name ) )
-                    .append( $( '<br>' ) )
-                    .append( place.vicinity );
-            if( possiblePlaces.indexOf( place.place_id ) === -1 )
+        new SearchMap.SearchMap( mapElement[ 0 ], {
+            placeInfoWindowContentCreator: function( place, isExistingPlace )
             {
-                newPossibleRestaurantPlaceIdInput.val( place.place_id );
-                infoWindowContent.append( newPossibleRestaurantForm )
-            }
-            return infoWindowContent[ 0 ];
+                let infoWindowContent = $( '<center>' )
+                        .append( $( '<b>' ).text( place.name ) )
+                        .append( $( '<br>' ) )
+                        .append( place.vicinity );
+                if( !isExistingPlace )
+                {
+                    newPossibleRestaurantPlaceIdInput.val( place.place_id );
+                    infoWindowContent.append( newPossibleRestaurantForm )
+                }
+                return infoWindowContent[ 0 ];
+            },
+            existingPlaces: mapElement.data( 'possible-restaurants' )
         } );
     }
 }
