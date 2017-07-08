@@ -1,6 +1,6 @@
 <div class="row">
 
-  <div class="col-md-10 col-md-offset-1">
+  <div class="col-md-12">
     <div class="well">
       <center>
 
@@ -35,19 +35,17 @@
     </div>
   </div>
 
-  <div class="col-md-5 col-md-offset-1">
+  <div class="col-md-6">
+    <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: @meal.possible_restaurants.map { |possible_restaurant| possible_restaurant.place } } %>
+  </div>
+
+  <div class="col-md-3">
     <h3>Possible Restaurants</h3>
 
     <%= render 'possible_restaurants' %>
   </div>
 
-  <div class="col-md-5">
-
-    <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: @meal.possible_restaurants.map { |possible_restaurant| possible_restaurant.place } } %>
-
-  </div>
-
-  <div class="col-md-5 col-md-offset-1">
+  <div class="col-md-3">
     <h3>Attendees</h3>
 
     <%= render 'attendees' %>
