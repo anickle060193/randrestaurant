@@ -48,7 +48,8 @@ namespace SearchMap
                     style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
                     position: google.maps.ControlPosition.BOTTOM_CENTER
                 },
-                streetViewControl: false
+                streetViewControl: false,
+                fullscreenControl: false
             } );
 
             this.infoWindow = new google.maps.InfoWindow();

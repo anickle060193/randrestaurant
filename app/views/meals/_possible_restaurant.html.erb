@@ -1,10 +1,12 @@
-<li class="list-group-item">
+<li class="list-group-item clearfix possible-restaurant">
   <%= link_to possible_restaurant.name, possible_restaurant %>
 
   <% if @meal.organizer == current_user %>
-    <%= form_for @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), method: :delete do |f| %>
+    <%= form_for @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), method: :delete, html: { class: 'pull-right' } do |f| %>
       <%= hidden_field_tag :meal_id, @meal.id %>
-      <%= f.submit 'Remove', class: 'btn btn-link' %>
+      <%= button_tag type: 'submit', class: 'btn btn-xs btn-danger', title: 'Remove' do %>
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      <% end %>
     <% end %>
   <% end %>
 </li>
