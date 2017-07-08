@@ -2,7 +2,6 @@
 var RandRestaurant;
 (function (RandRestaurant) {
     function init() {
-        return;
     }
     RandRestaurant.init = init;
     function ready(callback) {

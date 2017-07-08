@@ -8,6 +8,7 @@ class MealsController < ApplicationController
 
   def new
     @meal = Meal.new
+    @meal.time = DateTime.now
   end
 
   def create

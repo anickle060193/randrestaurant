@@ -2,7 +2,6 @@ namespace RandRestaurant
 {
     export function init()
     {
-        return;
     }
 
     export function ready( callback: any )
