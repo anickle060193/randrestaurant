@@ -1,7 +1,20 @@
+.meal-options-dropdown
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 8px;
+    margin-right: 8px;
+    transform: translateX( -50% );
+}
+
 .possible-restaurant
 {
-    form
+    .possible-restaurant-dropdown
     {
-        display: inline-block;
+        a
+        {
+            border: none;
+        }
     }
 }

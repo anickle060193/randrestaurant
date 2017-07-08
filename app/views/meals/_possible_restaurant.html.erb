@@ -1,12 +1,28 @@
 <li class="list-group-item clearfix possible-restaurant">
-  <%= link_to possible_restaurant.name, possible_restaurant %>
+  <%= link_to possible_restaurant.name, possible_restaurant, class: 'btn btn-link' %>
 
   <% if @meal.organizer == current_user %>
-    <%= form_for @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), method: :delete, html: { class: 'pull-right' } do |f| %>
-      <%= hidden_field_tag :meal_id, @meal.id %>
-      <%= button_tag type: 'submit', class: 'btn btn-xs btn-danger', title: 'Remove' do %>
-        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-      <% end %>
-    <% end %>
+
+    <div class="dropdown possible-restaurant-dropdown pull-right">
+
+      <a id="possible-restaurant-options-dropdown" href="#" class="btn btn-sm btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+      </a>
+
+      <ul class="dropdown-menu pull-right" aria-labelledby="possible-restaurant-options-dropdown">
+
+        <% if possible_restaurant != @meal.restaurant %>
+          <li>
+            <%= link_to 'Set as Meal Restaurant', meal_path( @meal, meal: { restaurant_id: possible_restaurant.id } ), method: :patch %>
+          </li>
+        <% end %>
+
+        <li>
+          <%= link_to 'Remove as Possible Restaurant', @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), method: :delete %>
+        </li>
+
+      </ul>
+    </div>
+
   <% end %>
 </li>

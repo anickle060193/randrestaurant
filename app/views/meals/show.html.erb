@@ -3,11 +3,35 @@
   <div class="col-md-8 col-md-offset-2">
     <div class="well">
       <center>
+
         <h1>
           <%= @meal.name %>
+          <% if @meal.restaurant.present? %>
+            <small>at</small>
+            <%= link_to_if @meal.restaurant.link.present?, @meal.restaurant.name, @meal.restaurant.link %>
+          <% end %>
         </h1>
-        <%= @meal.time.strftime( "%B %d, %Y at %I:%M %p" ) %>
+
+        <%= content_tag :p, @meal.time.strftime( "%B %d, %Y at %I:%M %p" ) %>
+
       </center>
+
+      <% if @meal.organizer == current_user %>
+        <div class="dropdown meal-options-dropdown">
+          <a id="meal-options-dropdown" href="#" class="btn btn-sm btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+          </a>
+          <ul class="dropdown-menu pull-right" aria-labelledby="meal-options-dropdown">
+            <% if @meal.restaurant.present? %>
+              <li>
+                <%= link_to 'Clear Meal Restaurant', meal_path( @meal, meal: { restaurant_id: nil } ), method: :patch %>
+              </li>
+            <% end %>
+            <li><%= link_to 'Edit Meal', edit_meal_path( @meal ) %></li>
+          </ul>
+        </div>
+      <% end %>
+
     </div>
   </div>
 
@@ -20,9 +44,9 @@
   <div class="col-md-6">
     <h3>Possible Restaurants</h3>
 
-    <div class="list-group">
+    <ul class="list-group">
       <%= render partial: 'possible_restaurant', collection: @meal.possible_restaurants %>
-    </div>
+    </ul>
   </div>
 
 </div>

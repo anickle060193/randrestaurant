@@ -36,7 +36,7 @@ class MealsController < ApplicationController
   private
 
     def meal_params
-      params.require( :meal ).permit( :name, :time )
+      params.require( :meal ).permit( :name, :time, :restaurant_id )
     end
 
     def find_meal
