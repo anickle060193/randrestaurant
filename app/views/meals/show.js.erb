@@ -1,0 +1,6 @@
+$( '#search-attendees' ).replaceWith( $( '<%= escape_javascript( render 'search_attendees' ) %>' ) );
+
+if( window.history && window.history.pushState )
+{
+    window.history.pushState( null, null, '<%= escape_javascript( url_for( params.permit( :attendee_search ) ) ) %>' );
+}

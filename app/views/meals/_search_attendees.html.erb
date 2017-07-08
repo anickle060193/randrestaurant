@@ -1,0 +1,9 @@
+<div id="search-attendees">
+  <% if @attendees_search.any? %>
+    <ul class="list-group">
+      <%= render partial: 'search_attendee', collection: @attendees_search %>
+    </ul>
+  <% elsif params[ :attendee_search ].present? %>
+    <p>No new attendees found...</p>
+  <% end %>
+</div>

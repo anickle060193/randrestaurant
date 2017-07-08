@@ -1,5 +1,5 @@
 <li class="list-group-item clearfix possible-restaurant">
-  <%= link_to possible_restaurant.name, possible_restaurant, class: 'btn btn-link' %>
+  <%= link_to possible_restaurant.name, possible_restaurant %>
 
   <% if @meal.organizer == current_user %>
 
@@ -18,7 +18,7 @@
         <% end %>
 
         <li>
-          <%= link_to 'Remove as Possible Restaurant', @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), method: :delete %>
+          <%= link_to 'Remove as Possible Restaurant', possible_meal_restaurant_path( @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), meal_id: @meal.id ), method: :delete %>
         </li>
 
       </ul>

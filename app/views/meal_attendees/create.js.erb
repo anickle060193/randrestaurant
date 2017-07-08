@@ -1,0 +1,3 @@
+$( '#attendees' ).replaceWith( $( '<%= escape_javascript( render 'meals/attendees' ) %>' ) );
+
+$( '#search-attendee-<%= @new_attendee.id %>' ).remove();

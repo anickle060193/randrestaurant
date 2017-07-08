@@ -1,0 +1,2 @@
+module MealAttendeesHelper
+end

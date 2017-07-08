@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170705052756) do
+ActiveRecord::Schema.define(version: 20170708174307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "meal_attendees", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "meal_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["meal_id"], name: "index_meal_attendees_on_meal_id", using: :btree
+    t.index ["user_id", "meal_id"], name: "index_meal_attendees_on_user_id_and_meal_id", unique: true, using: :btree
+    t.index ["user_id"], name: "index_meal_attendees_on_user_id", using: :btree
+  end
 
   create_table "meals", force: :cascade do |t|
     t.string   "name",          null: false
@@ -80,6 +90,8 @@ ActiveRecord::Schema.define(version: 20170705052756) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
+  add_foreign_key "meal_attendees", "meals"
+  add_foreign_key "meal_attendees", "users"
   add_foreign_key "meals", "restaurants"
   add_foreign_key "meals", "users"
   add_foreign_key "never_agains", "restaurants"

@@ -16,6 +16,9 @@ class User < ApplicationRecord
 
   has_many :organized_meals, class_name: 'Meal', foreign_key: 'user_id', dependent: :nullify
 
+  has_many :meal_attendees
+  has_many :attending_meals, through: :meal_attendees, source: :meal, dependent: :destroy
+
   def like( restaurant )
     restaurants << restaurant
   end

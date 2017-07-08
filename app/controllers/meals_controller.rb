@@ -4,6 +4,13 @@ class MealsController < ApplicationController
   before_action :correct_user, only: [ :edit, :update ]
 
   def show
+    if params[ :attendee_search ].present?
+      @attendees_search = User.where.not( id: @meal.attendees ).where( 'email LIKE :search', search: "%#{params[ :attendee_search ]}%" )
+    else
+      @attendees_search = [ ]
+    end
+
+    respond_to :html, :js
   end
 
   def new
@@ -14,6 +21,7 @@ class MealsController < ApplicationController
   def create
     @meal = Meal.new( meal_params )
     @meal.organizer = current_user
+    @meal.attendees << current_user
     if @meal.save
       redirect_to @meal
     else

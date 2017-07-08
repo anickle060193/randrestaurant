@@ -12,9 +12,35 @@
 {
     .possible-restaurant-dropdown
     {
-        a
+        a.btn
         {
             border: none;
+            margin: -5px -10px;
+        }
+    }
+}
+
+.meal-attendee
+{
+    .meal-attendee-dropdown
+    {
+        a.btn
+        {
+            border: none;
+            margin: -5px -10px;
+        }
+    }
+}
+
+.search-attendee
+{
+    form
+    {
+        display: inline-block;
+
+        .btn
+        {
+            margin: -5px -10px;
         }
     }
 }

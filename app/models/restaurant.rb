@@ -2,7 +2,7 @@ class Restaurant < ApplicationRecord
   require 'google_maps'
 
   has_many :restaurant_likes
-  has_many :users, through: :restaurant_likes, dependent: :destroy
+  has_many :liking_users, through: :restaurant_likes, source: :user, dependent: :destroy
 
   has_many :never_agains
   has_many :never_againers, through: :never_agains, source: :user, dependent: :destroy

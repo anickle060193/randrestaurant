@@ -1,0 +1,22 @@
+<li class="list-group-item meal-attendee">
+  <%= link_to attendee.email, attendee %>
+
+  <% if @meal.organizer == current_user %>
+
+    <div class="dropdown meal-attendee-dropdown pull-right">
+
+      <a id="meal-attendee-options-dropdown" href="#" class="btn btn-sm btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+      </a>
+
+      <ul class="dropdown-menu pull-right" aria-labelledby="meal-attendee-options-dropdown">
+
+        <li>
+          <%= link_to 'Remove Attendee', meal_attendee_path( @meal.meal_attendees.find_by( user: attendee ), meal_id: @meal.id ), method: :delete, remote: true %>
+        </li>
+
+      </ul>
+    </div>
+
+  <% end %>
+</li>

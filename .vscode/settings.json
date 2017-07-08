@@ -5,6 +5,9 @@
 	"[ruby]": {
         "editor.tabSize": 2
     },
+    "[erb]": {
+        "editor.tabSize": 2
+    },
     "[html]": {
         "editor.tabSize": 2
     },

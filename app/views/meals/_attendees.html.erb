@@ -1,0 +1,9 @@
+<div id="attendees">
+  <% if @meal.attendees.any? %>
+    <ul class="list-group">
+      <%= render partial: 'meals/attendee', collection: @meal.attendees %>
+    </ul>
+  <% else %>
+    <p>No attendees yet...</p>
+  <% end %>
+</div>

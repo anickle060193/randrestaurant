@@ -1,0 +1,8 @@
+<li class="list-group-item search-attendee" id="search-attendee-<%= search_attendee.id %>">
+  <%= link_to search_attendee.email, search_attendee %>
+
+  <%= button_to meal_attendees_path( user_id: search_attendee, meal_id: @meal ), remote: true, form_class: 'pull-right', class: 'btn btn-xs btn-default', title: 'Add as Attendee' do %>
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  <% end %>
+
+</li>

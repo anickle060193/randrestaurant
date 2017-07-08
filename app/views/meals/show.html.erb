@@ -1,6 +1,6 @@
 <div class="row">
 
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-10 col-md-offset-1">
     <div class="well">
       <center>
 
@@ -35,21 +35,49 @@
     </div>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-5 col-md-offset-1">
+    <h3>Possible Restaurants</h3>
+
+    <% if @meal.possible_restaurants.any? %>
+      <ul class="list-group">
+        <%= render partial: 'possible_restaurant', collection: @meal.possible_restaurants %>
+      </ul>
+    <% else %>
+      <p>No possible restaurants added yet...</p>
+    <% end %>
+  </div>
+
+  <div class="col-md-5">
 
     <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: @meal.possible_restaurants.map { |possible_restaurant| possible_restaurant.place } } %>
 
   </div>
 
-  <div class="col-md-6">
-    <h3>Possible Restaurants</h3>
+  <div class="col-md-5 col-md-offset-1">
+    <h3>Attendees</h3>
 
-    <ul class="list-group">
-      <%= render partial: 'possible_restaurant', collection: @meal.possible_restaurants %>
-    </ul>
+    <%= render 'attendees' %>
+
+    <% if @meal.organizer == current_user %>
+      <%= form_tag @meal, method: :get, remote: true do %>
+        <div class="input-group">
+          <%= text_field_tag :attendee_search, params[ :attendee_search ], class: 'form-control', placeholder: 'Search for new attendee...' %>
+          <span class="input-group-btn">
+            <%= button_tag type: 'search', name: nil, class: 'btn btn-default', title: 'Search for Attendee' do %>
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <% end %>
+          </span>
+        </div>
+      <% end %>
+
+      <%= render 'search_attendees' %>
+
+    <% end %>
+
   </div>
 
 </div>
+
 
 <% if @meal.organizer == current_user %>
   <%= form_for @meal.possible_meal_restaurants.new, html: { id: "new-possible-restaurant-form", class: "hidden" } do |f| %>
