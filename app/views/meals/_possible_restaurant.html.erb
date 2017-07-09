@@ -1,29 +1,37 @@
 <li class="list-group-item clearfix possible-restaurant">
-  <%= link_to possible_restaurant.name, possible_restaurant %>
 
-  <% if @meal.organizer == current_user %>
+  <div>
 
-    <div class="dropdown possible-restaurant-dropdown pull-right">
+    <%= link_to possible_restaurant.name, possible_restaurant %>
 
-      <a id="possible-restaurant-options-dropdown" href="#" class="btn btn-sm btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-        <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
-      </a>
+    <% if @meal.organizer == current_user %>
 
-      <ul class="dropdown-menu pull-right" aria-labelledby="possible-restaurant-options-dropdown">
+      <div class="dropdown possible-restaurant-dropdown pull-right">
 
-        <% if possible_restaurant != @meal.restaurant %>
+        <a id="possible-restaurant-options-dropdown" href="#" class="btn btn-sm btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+        </a>
+
+        <ul class="dropdown-menu pull-right" aria-labelledby="possible-restaurant-options-dropdown">
+
+          <% if possible_restaurant != @meal.restaurant %>
+            <li>
+              <%= link_to 'Set as Meal Restaurant', meal_path( @meal, meal: { restaurant_id: possible_restaurant.id } ), method: :patch %>
+            </li>
+          <% end %>
+
           <li>
-            <%= link_to 'Set as Meal Restaurant', meal_path( @meal, meal: { restaurant_id: possible_restaurant.id } ), method: :patch %>
+            <% remove_possible_restaurant_url = possible_meal_restaurant_path( @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), place_id: possible_restaurant.place_id, meal_id: @meal.id ) %>
+            <%= link_to 'Remove as Possible Restaurant', remove_possible_restaurant_url, remote: true, method: :delete %>
           </li>
-        <% end %>
 
-        <li>
-          <% remove_possible_restaurant_url = possible_meal_restaurant_path( @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), place_id: possible_restaurant.place_id, meal_id: @meal.id ) %>
-          <%= link_to 'Remove as Possible Restaurant', remove_possible_restaurant_url, remote: true, method: :delete %>
-        </li>
+        </ul>
+      </div>
 
-      </ul>
-    </div>
+    <% end %>
 
-  <% end %>
+  </div>
+
+  <%= render partial: 'meals/possible_restaurant_vote_form', locals: { possible_restaurant: possible_restaurant } %>
+
 </li>

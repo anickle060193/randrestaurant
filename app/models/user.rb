@@ -19,6 +19,8 @@ class User < ApplicationRecord
   has_many :meal_attendees
   has_many :attending_meals, through: :meal_attendees, source: :meal, dependent: :destroy
 
+  has_many :possible_meal_restaurant_votes, dependent: :destroy
+
   def like( restaurant )
     restaurants << restaurant
   end

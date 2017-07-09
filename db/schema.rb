@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170708174307) do
+ActiveRecord::Schema.define(version: 20170709011134) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,17 @@ ActiveRecord::Schema.define(version: 20170708174307) do
     t.index ["restaurant_id"], name: "index_never_agains_on_restaurant_id", using: :btree
     t.index ["user_id", "restaurant_id"], name: "index_never_agains_on_user_id_and_restaurant_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_never_agains_on_user_id", using: :btree
+  end
+
+  create_table "possible_meal_restaurant_votes", force: :cascade do |t|
+    t.boolean  "vote",                        null: false
+    t.integer  "user_id",                     null: false
+    t.integer  "possible_meal_restaurant_id", null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["possible_meal_restaurant_id"], name: "possible_meal_restaurant_index", using: :btree
+    t.index ["user_id", "possible_meal_restaurant_id"], name: "unique_vote_index", unique: true, using: :btree
+    t.index ["user_id"], name: "index_possible_meal_restaurant_votes_on_user_id", using: :btree
   end
 
   create_table "possible_meal_restaurants", force: :cascade do |t|
@@ -96,6 +107,8 @@ ActiveRecord::Schema.define(version: 20170708174307) do
   add_foreign_key "meals", "users"
   add_foreign_key "never_agains", "restaurants"
   add_foreign_key "never_agains", "users"
+  add_foreign_key "possible_meal_restaurant_votes", "possible_meal_restaurants"
+  add_foreign_key "possible_meal_restaurant_votes", "users"
   add_foreign_key "possible_meal_restaurants", "meals"
   add_foreign_key "possible_meal_restaurants", "restaurants"
   add_foreign_key "restaurant_likes", "restaurants"

@@ -15,4 +15,6 @@ Rails.application.routes.draw do
   resources :possible_meal_restaurants, only: [ :create, :destroy ]
 
   resources :meal_attendees, only: [ :create, :destroy ]
+
+  resources :possible_meal_restaurant_votes, only: [ :create, :update, :destroy ]
 end

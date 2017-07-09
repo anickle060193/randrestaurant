@@ -21,7 +21,7 @@ class MealsController < ApplicationController
   def create
     @meal = Meal.new( meal_params )
     @meal.organizer = current_user
-    @meal.attendees << current_user
+    @meal.invite( current_user )
     if @meal.save
       redirect_to @meal
     else

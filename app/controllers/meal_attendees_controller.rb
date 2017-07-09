@@ -4,7 +4,7 @@ class MealAttendeesController < ApplicationController
   def create
     @meal = Meal.find( params[ :meal_id ] )
     @new_attendee = User.find( params[ :user_id ] )
-    @meal.attendees << @new_attendee unless @meal.attendees.exists?( @new_attendee.id )
+    @meal.invite( @new_attendee )
 
     respond_to do |format|
       format.html { redirect_to @meal }
