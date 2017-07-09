@@ -2,5 +2,5 @@ $( '#possible-restaurants' ).replaceWith( $( '<%= escape_javascript( render 'mea
 
 if( Meals.searchMap )
 {
-    Meals.searchMap.addExistingPlace( '<%= @added_possible_restaurant.place_id %>' );
+    Meals.searchMap.addExistingPlace( '<%= @possible_restaurant.place_id %>' );
 }

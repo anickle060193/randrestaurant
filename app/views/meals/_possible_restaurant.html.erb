@@ -18,7 +18,7 @@
         <% end %>
 
         <li>
-          <% remove_possible_restaurant_url = possible_meal_restaurant_path( @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), restaurant_id: possible_restaurant.id, meal_id: @meal.id ) %>
+          <% remove_possible_restaurant_url = possible_meal_restaurant_path( @meal.possible_meal_restaurants.find_by( restaurant: possible_restaurant ), place_id: possible_restaurant.place_id, meal_id: @meal.id ) %>
           <%= link_to 'Remove as Possible Restaurant', remove_possible_restaurant_url, remote: true, method: :delete %>
         </li>
 
