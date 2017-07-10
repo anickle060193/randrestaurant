@@ -24,7 +24,8 @@ var Meals;
                 }
                 return infoWindowContent[0];
             },
-            existingPlaces: mapElement.data('possible-restaurants')
+            existingPlaces: mapElement.data('possible-restaurants'),
+            searchingDisabled: mapElement.data('searching-disabled')
         });
     }
     Meals.initShow = initShow;

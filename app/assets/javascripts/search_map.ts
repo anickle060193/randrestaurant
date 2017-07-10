@@ -6,8 +6,9 @@ namespace SearchMap
 
     export interface MapOptions
     {
-        placeInfoWindowContentCreator?: PlaceInfoWindowContentCreator,
+        placeInfoWindowContentCreator?: PlaceInfoWindowContentCreator;
         existingPlaces?: google.maps.places.PlaceResult[];
+        searchingDisabled?: boolean;
     }
 
     export class SearchMap
@@ -22,14 +23,18 @@ namespace SearchMap
         private placeInfoWindowContentCreator?: PlaceInfoWindowContentCreator;
         private existingPlaces: google.maps.places.PlaceResult[];
         private existingPlaceMarkers: { [ existingPlaceId: string ]: google.maps.Marker };
+        private searchingEnabled: boolean;
 
         constructor( mapElement: HTMLElement, options?: MapOptions )
         {
             console.log( 'SearchMap.Map()' );
 
+            this.searchingEnabled = true;
+
             if( options )
             {
                 this.placeInfoWindowContentCreator = options.placeInfoWindowContentCreator;
+
                 if( options.existingPlaces )
                 {
                     this.existingPlaces = options.existingPlaces;
@@ -38,6 +43,8 @@ namespace SearchMap
                 {
                     this.existingPlaces = [ ];
                 }
+
+                this.searchingEnabled = !options.searchingDisabled;
             }
 
             this.map = new google.maps.Map( mapElement, {
@@ -57,20 +64,23 @@ namespace SearchMap
 
             this.placesService = new google.maps.places.PlacesService( this.map );
 
-            let mapSearchInput = document.createElement( 'input' );
-            mapSearchInput.type = 'text';
-            mapSearchInput.placeholder = 'Search for restaurants...';
-            mapSearchInput.style.width = '80%';
-            mapSearchInput.style.margin = '10px';
-            mapSearchInput.classList.add( 'form-control' );
+            if( this.searchingEnabled )
+            {
+                let mapSearchInput = document.createElement( 'input' );
+                mapSearchInput.type = 'text';
+                mapSearchInput.placeholder = 'Search for restaurants...';
+                mapSearchInput.style.width = '80%';
+                mapSearchInput.style.margin = '10px';
+                mapSearchInput.classList.add( 'form-control' );
 
-            this.searchBox = new google.maps.places.SearchBox( mapSearchInput );
-            this.map.controls[ google.maps.ControlPosition.TOP_CENTER ].push( mapSearchInput );
+                this.searchBox = new google.maps.places.SearchBox( mapSearchInput );
+                this.map.controls[ google.maps.ControlPosition.TOP_CENTER ].push( mapSearchInput );
 
-            this.map.addListener( 'bounds_changed', () => this.onMapBoundsChange() );
+                this.map.addListener( 'bounds_changed', () => this.onMapBoundsChange() );
 
-            this.markers = { };
-            this.searchBox.addListener( 'places_changed', () => this.onSearchBoxPlacesChanged() );
+                this.markers = { };
+                this.searchBox.addListener( 'places_changed', () => this.onSearchBoxPlacesChanged() );
+            }
 
             this.existingPlaceMarkers = { };
             if( this.existingPlaces.length > 0 )

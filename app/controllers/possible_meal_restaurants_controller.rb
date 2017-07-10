@@ -43,7 +43,7 @@ class PossibleMealRestaurantsController < ApplicationController
     end
 
     def correct_user
-      unless @meal.organizer == current_user
+      unless @meal.organizer?( current_user )
         redirect_to @meal
       end
     end

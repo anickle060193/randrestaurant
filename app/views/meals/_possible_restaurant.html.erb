@@ -2,7 +2,7 @@
 
   <%= link_to possible_restaurant.name, possible_restaurant %>
 
-  <% if @meal.organizer == current_user %>
+  <% if @meal.organizer?( current_user ) %>
 
     <div class="dropdown possible-restaurant-dropdown pull-right">
 

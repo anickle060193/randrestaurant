@@ -6,6 +6,7 @@ var SearchMap;
         function SearchMap(mapElement, options) {
             var _this = this;
             console.log('SearchMap.Map()');
+            this.searchingEnabled = true;
             if (options) {
                 this.placeInfoWindowContentCreator = options.placeInfoWindowContentCreator;
                 if (options.existingPlaces) {
@@ -14,6 +15,7 @@ var SearchMap;
                 else {
                     this.existingPlaces = [];
                 }
+                this.searchingEnabled = !options.searchingDisabled;
             }
             this.map = new google.maps.Map(mapElement, {
                 center: { lat: 39.0915837, lng: -94.8559123 },
@@ -29,17 +31,19 @@ var SearchMap;
             });
             this.infoWindow = new google.maps.InfoWindow();
             this.placesService = new google.maps.places.PlacesService(this.map);
-            var mapSearchInput = document.createElement('input');
-            mapSearchInput.type = 'text';
-            mapSearchInput.placeholder = 'Search for restaurants...';
-            mapSearchInput.style.width = '80%';
-            mapSearchInput.style.margin = '10px';
-            mapSearchInput.classList.add('form-control');
-            this.searchBox = new google.maps.places.SearchBox(mapSearchInput);
-            this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(mapSearchInput);
-            this.map.addListener('bounds_changed', function () { return _this.onMapBoundsChange(); });
-            this.markers = {};
-            this.searchBox.addListener('places_changed', function () { return _this.onSearchBoxPlacesChanged(); });
+            if (this.searchingEnabled) {
+                var mapSearchInput = document.createElement('input');
+                mapSearchInput.type = 'text';
+                mapSearchInput.placeholder = 'Search for restaurants...';
+                mapSearchInput.style.width = '80%';
+                mapSearchInput.style.margin = '10px';
+                mapSearchInput.classList.add('form-control');
+                this.searchBox = new google.maps.places.SearchBox(mapSearchInput);
+                this.map.controls[google.maps.ControlPosition.TOP_CENTER].push(mapSearchInput);
+                this.map.addListener('bounds_changed', function () { return _this.onMapBoundsChange(); });
+                this.markers = {};
+                this.searchBox.addListener('places_changed', function () { return _this.onSearchBoxPlacesChanged(); });
+            }
             this.existingPlaceMarkers = {};
             if (this.existingPlaces.length > 0) {
                 var bounds = new google.maps.LatLngBounds();

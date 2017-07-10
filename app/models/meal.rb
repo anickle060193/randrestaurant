@@ -14,8 +14,12 @@ class Meal < ApplicationRecord
   validates :time, presence: true
   validates :organizer, presence: true
 
+  def organizer?( user )
+    user && organizer == user
+  end
+
   def attended_by?( user )
-    attendees.exists?( user.id ) || organizer == user
+    attendees.exists?( user.id ) || organizer?( user )
   end
 
   def invite( user )

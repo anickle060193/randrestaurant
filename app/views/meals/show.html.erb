@@ -16,7 +16,7 @@
 
       </center>
 
-      <% if @meal.organizer == current_user %>
+      <% if @meal.organizer?( current_user ) %>
         <div class="dropdown meal-options-dropdown">
           <a id="meal-options-dropdown" href="#" class="btn btn-sm btn-default" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
@@ -37,7 +37,8 @@
   </div>
 
   <div class="col-md-5">
-    <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: @meal.possible_restaurants.map { |possible_restaurant| possible_restaurant.place } } %>
+    <% possible_restaurants_data = @meal.possible_restaurants.map { |possible_restaurant| possible_restaurant.place } %>
+    <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: possible_restaurants_data, searching_disabled: !@meal.organizer?( current_user ) } %>
   </div>
 
   <div class="col-md-4">
@@ -51,7 +52,7 @@
 
     <%= render 'attendees' %>
 
-    <% if @meal.organizer == current_user %>
+    <% if @meal.organizer?( current_user ) %>
       <%= form_tag @meal, method: :get, remote: true do %>
         <div class="input-group">
           <%= text_field_tag :attendee_search, params[ :attendee_search ], class: 'form-control', placeholder: 'Search for new attendee...' %>
@@ -72,7 +73,7 @@
 </div>
 
 
-<% if @meal.organizer == current_user %>
+<% if @meal.organizer?( current_user ) %>
   <%= form_for @meal.possible_meal_restaurants.new, remote: true, html: { id: "new-possible-restaurant-form", class: "hidden" } do |f| %>
     <%= hidden_field_tag :meal_id, @meal.id %>
     <%= hidden_field_tag :place_id, '', id: "new-possible-restaurant-place-id-input" %>
