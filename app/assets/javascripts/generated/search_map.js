@@ -72,7 +72,7 @@ var SearchMap;
                 map: this.map,
                 title: existingPlace.name,
                 position: existingPlace.geometry.location,
-                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
             });
             marker.set(MARKER_PLACE_KEY, existingPlace);
             marker.addListener('click', function () { return _this.onMarkerClicked(marker, true); });
