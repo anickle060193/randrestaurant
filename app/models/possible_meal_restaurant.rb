@@ -26,4 +26,12 @@ class PossibleMealRestaurant < ApplicationRecord
     votes.where( user: user ).any?
   end
 
+  def up_vote_count
+    votes.where( vote: true ).count
+  end
+
+  def down_vote_count
+    votes.where( vote: false ).count
+  end
+
 end

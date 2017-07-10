@@ -15,7 +15,7 @@ class Meal < ApplicationRecord
   validates :organizer, presence: true
 
   def attended_by?( user )
-    attendees.exists?( user.id )
+    attendees.exists?( user.id ) || organizer == user
   end
 
   def invite( user )

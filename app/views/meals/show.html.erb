@@ -36,11 +36,11 @@
     </div>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-5">
     <%= content_tag 'div', '', id: 'meal-search-map', class: 'map', data: { possible_restaurants: @meal.possible_restaurants.map { |possible_restaurant| possible_restaurant.place } } %>
   </div>
 
-  <div class="col-md-3">
+  <div class="col-md-4">
     <h3>Possible Restaurants</h3>
 
     <%= render 'possible_restaurants' %>

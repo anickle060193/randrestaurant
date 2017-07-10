@@ -1,33 +1,37 @@
-<div class="possible-restaurant-vote-form">
+<div class="possible-restaurant-vote-form clearfix pull-right">
 
-  <% possible_meal_restaurant = @meal.possible_meal_restaurants.find_by!( restaurant: possible_restaurant ) %>
-  <% vote = possible_meal_restaurant.votes.find_by( user: current_user ) %>
+  <% if @meal.attended_by?( current_user ) %>
 
-  <% if vote.present? && !vote.vote %>
+    <% possible_meal_restaurant = @meal.possible_meal_restaurants.find_by!( restaurant: possible_restaurant ) %>
+    <% vote = possible_meal_restaurant.votes.find_by( user: current_user ) %>
 
-    <%= button_to possible_meal_restaurant.votes.find_by( user: current_user ), method: :delete, title: 'Un-Down Vote Restaurant', class: 'btn btn-default' do %>
-      <%= icon 'thumbs-down', class: 'down-vote' %>
+    <% if vote.present? && !vote.vote %>
+
+      <%= button_to possible_meal_restaurant.votes.find_by( user: current_user ), method: :delete, title: 'Un-Down Vote Restaurant', class: 'btn btn-default' do %>
+        <%= possible_meal_restaurant.down_vote_count %> <%= icon 'thumbs-down', class: 'down-vote' %>
+      <% end %>
+
+    <% else %>
+
+      <%= button_to possible_meal_restaurant_votes_path( possible_meal_restaurant_id: possible_meal_restaurant, vote: false ), title: 'Down Vote Restaurant', class: 'btn btn-default' do %>
+        <%= possible_meal_restaurant.down_vote_count %> <%= icon 'thumbs-o-down' %>
+      <% end %>
+
     <% end %>
 
-  <% else %>
 
-    <%= button_to possible_meal_restaurant_votes_path( possible_meal_restaurant_id: possible_meal_restaurant, vote: false ), title: 'Down Vote Restaurant', class: 'btn btn-default' do %>
-      <%= icon 'thumbs-o-down' %>
-    <% end %>
+    <% if vote.present? && vote.vote %>
 
-  <% end %>
+      <%= button_to possible_meal_restaurant.votes.find_by( user: current_user ), method: :delete, title: 'Un-Up Vote Restaurant', class: 'btn btn-default' do %>
+        <%= possible_meal_restaurant.up_vote_count %> <%= icon 'thumbs-up', class: 'up-vote' %>
+      <% end %>
 
+    <% else %>
 
-  <% if vote.present? && vote.vote %>
+      <%= button_to possible_meal_restaurant_votes_path( possible_meal_restaurant_id: possible_meal_restaurant, vote: true ), title: 'Up Vote Restaurant', class: 'btn btn-default' do %>
+        <%= possible_meal_restaurant.up_vote_count %> <%= icon 'thumbs-o-up' %>
+      <% end %>
 
-    <%= button_to possible_meal_restaurant.votes.find_by( user: current_user ), method: :delete, title: 'Un-Up Vote Restaurant', class: 'btn btn-default' do %>
-      <%= icon 'thumbs-up', class: 'up-vote' %>
-    <% end %>
-
-  <% else %>
-
-    <%= button_to possible_meal_restaurant_votes_path( possible_meal_restaurant_id: possible_meal_restaurant, vote: true ), title: 'Up Vote Restaurant', class: 'btn btn-default' do %>
-      <%= icon 'thumbs-o-up' %>
     <% end %>
 
   <% end %>
