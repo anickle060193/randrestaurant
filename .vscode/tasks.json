@@ -5,8 +5,12 @@
             "taskName": "tsc",
             "command": "${workspaceRoot}/node_modules/.bin/tsc",
             "args": [ "-w", "-p", "." ],
-            "showOutput": "silent",
-            "isShellCommand": true,
+            "type": "shell",
+            "presentation": {
+                "reveal": "silent",
+                "focus": false,
+                "panel": "dedicated"
+            },
             "isBackground": true,
             "problemMatcher": "$tsc-watch"
         },
@@ -14,8 +18,9 @@
             "taskName": "rails s",
             "command": "rails",
             "args": [ "s" ],
-            "isShellCommand": true,
-            "isBackground": true
+            "type": "shell",
+            "isBackground": true,
+            "problemMatcher": [ ]
         }
     ]
 }
